@@ -72,7 +72,7 @@ def findPage():
 			data = data_dictionary.copy()
 			page_pic.append(data)
 
-		return json.dumps({"next page": next_page, "data":page_pic}, ensure_ascii=False)
+		return json.dumps({"nextPage": next_page, "data":page_pic}, ensure_ascii=False)
 
 	else:
 		searchWord = "%" + request.args["keyword"] + "%" 
@@ -81,7 +81,7 @@ def findPage():
 		total=mycursor.fetchone()
 		total=(int(total[0]))//12
 		searchPage = int(request.args["page"])
-		mycursor.execute("SELECT * FROM information WHERE name LIKE '%s' LIMIT 12" %(searchWord))
+		mycursor.execute("SELECT * FROM information WHERE name LIKE '%s' LIMIT 12 ,12" %(searchWord))
 		result=mycursor.fetchall()
 		# print (result)
 		# return ("yes")
@@ -111,7 +111,7 @@ def findPage():
 			data = data_dictionary.copy()
 			page_pic.append(data)
 
-		return json.dumps(page_pic, ensure_ascii=False)
+		return json.dumps({"nextPage": next_page, "data":page_pic}, ensure_ascii=False)
 
 @app.route("/api/attraction/<attractionId>")
 def findId(attractionId):
