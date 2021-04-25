@@ -81,7 +81,7 @@ def findPage():
 		total=mycursor.fetchone()
 		total=(int(total[0]))//12
 		searchPage = int(request.args["page"])
-		mycursor.execute("SELECT * FROM information WHERE name LIKE '%s' LIMIT 12 ,12" %(searchWord))
+		mycursor.execute(f"SELECT * FROM information WHERE name LIKE '%s' LIMIT 12 OFFSET {searchPage*12}" %(searchWord))
 		result=mycursor.fetchall()
 		# print (result)
 		# return ("yes")
@@ -94,8 +94,6 @@ def findPage():
 			else:
 				next_page = None
 			data_dictionary = {
-				"next page": next_page,
-				"data": [{
 				"id": info[0],
 				"name": info[1],
 				"category": info[2],
@@ -106,8 +104,7 @@ def findPage():
 				"latitude": info[7],
 				"longitude": info[8],
 				"images": info[9].split(",")
-				}]
-			}
+				}
 			data = data_dictionary.copy()
 			page_pic.append(data)
 
