@@ -23,7 +23,7 @@ mycursor = mydb.cursor(buffered=True)
 
 
 
-app=Flask(__name__)
+app=Flask(__name__, static_folder = "static_data", static_url_path = "/")
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
 
@@ -150,4 +150,4 @@ def error_500(error):
 	
 
 
-app.run(host="0.0.0.0", port=3000,debug=True)
+app.run(host="127.0.0.1", port=3000,debug=True)

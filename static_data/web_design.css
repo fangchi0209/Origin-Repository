@@ -1,0 +1,337 @@
+
+@import url(//fonts.googleapis.com/earlyaccess/notosanstc.css);
+
+body {
+    margin: 0;
+}
+
+nav {
+    /* Navigation | Desktop */
+    position: fixed;
+    width: 100%;
+    height: 54px;
+    top: -5px;
+    background: white;
+    display: flex;
+    align-items: center;
+    z-index: 10;
+}
+
+.first {
+    width: 1200px;
+    height: 34px;
+    display: flex;
+    margin: 0px auto;
+
+}
+
+
+.header {
+    /* 台北一日遊 */
+    font-family: Noto Sans TC;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 30px;
+    flex: auto;
+    margin-left: 10px;
+
+    /* Cyan 800 */
+    color: #448899;
+}
+
+.menu {
+    /* Body - Reg 16(13.3) */
+    font-family: Noto Sans TC;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    margin: 10px;
+    color: #666666;
+    flex: none;
+    margin: 10px 10px;
+}
+
+
+
+
+.welcome {
+    /* Hero section | Desktop */
+
+    /* Auto Layout */
+    margin: 54px auto;
+    width: 100%;
+    height: 320px;
+    /* bottom: 1000px; */
+    position: relative;
+
+    /* Light | Cyan Gradient (135deg) */
+    background: linear-gradient(135deg, #AADDEE 0%, #66AABB 100%);
+}
+
+.welcome_pic {
+    /* welcome 1 */
+    position: absolute;
+    width: 650px;
+    right: 50px;
+    /* background: url("/img/welcome1.png"); */
+}
+
+.slogan {
+    /* slogan */
+
+    /* Auto Layout */
+    width: 1200px;
+    height: 169px;
+    margin: 50px auto; 
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+
+}
+
+.slogan_text {
+    /* slogan */
+    position: absolute;
+    width: 1180px;
+    height: 78px;
+    left: 0px;
+    top: 0px;
+}
+
+p {
+    /* Header 1 - Bold 28(24) */
+    font-family: Noto Sans TC;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 28px;
+    line-height: 24px;
+
+    /* Gray 50 */
+    color: #F8F8F8;
+
+    /* Text Shadow */
+    text-shadow: 0px 0px 30px #AABBCC;
+}
+
+
+.search {
+    /* search */
+    position: relative;
+    width: 800px;
+    height: 46px;
+    display: flex;
+
+}
+
+button {
+    /* btn */
+    width: 60px;
+    height: 46px;
+    left: 400px;
+    top: 0px;
+    background: #448899;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    flex: none;
+    border: 0px;
+}
+
+.search_icon {
+    /* icon / search */
+    width: 30px;
+    height: 30px;
+    margin: auto;
+    background-image: url("/img/icon_search.png");
+    
+}
+
+input {
+    /* input */
+    width: 398px;
+    height: 44px;
+    left: 0px;
+    top: 0px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border: 0px;
+    outline: none;
+    background: #FFFFFF;
+    flex: none;
+}
+
+::placeholder {
+    /* Body - Bold 16(13.3) */
+
+    font-family: Noto Sans TC;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+
+    align-items: center;
+
+    /* Gray 700 */
+
+    color: #757575;
+}
+
+
+.content {
+    /* attractions */
+    width: 1200px;
+    height: 100%;
+    margin: auto;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    position: relative;
+    align-items: center;
+    display: flex;
+}
+
+.box {
+    /* Attraction | Desktop */
+    width: 270px;
+    height: 242px;
+    left: 0px;
+    top: 0px;
+    flex: none;
+    margin: 10px 0px;
+
+    /* White */
+    background: #FFFFFF;
+    border: 1px solid #E8E8E8;
+    box-sizing: border-box;
+    border-radius: 5px;
+}
+
+.attractions_img {
+    width: 100%;
+    height: 160px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    left: 0px;
+    top: 0px;
+
+}
+
+.attractions_text {
+    width: 250px;
+    height: 22px;
+    margin-top: 10px;
+    margin-left: 10px;
+
+    /* Body - Bold 16(13.3) */
+    font-family: Noto Sans TC;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 13px;
+    /* or 83% */
+    display: flex;
+    align-items: center;
+
+    /* Gray 700 */
+    color: #757575;
+}
+
+.station {
+    width: 125px;
+    height: 20px;
+    margin-top: 10px;
+    margin-left: 10px;
+
+    /* Body - Reg 16(13.3) */
+    font-family: Noto Sans TC;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 13px;
+    /* or 83% */
+    flex: none;
+    align-items: center;
+
+    /* Gray 700 */
+    color: #757575;
+}
+
+.cat {
+    width: 125px;
+    height: 20px;
+    top: 210px;
+    margin-top: -20px;
+    margin-left: 130px;
+
+    /* Body - Reg 16(13.3) */
+    font-family: Noto Sans TC;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 13px;
+    /* or 83% */
+    flex: none;
+    align-items: center;
+    text-align: right;
+    justify-content: flex-end;
+
+    /* Gray 700 */
+    color: #757575;
+}
+
+.footer {
+    /* footer */
+
+    /* Auto Layout */
+    display: flex;
+    width: 100%;
+    height: 104px;
+    margin: auto;
+    bottom:0px;
+    align-items: center;
+    justify-content: center;
+    background: #757575;
+    color: white;
+    font-family: Noto Sans TC;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+
+}
+
+@media (max-width:800px) {
+    .content {
+        width: 370px;
+    }
+
+    .box {
+        width: 300px;
+    }
+
+    .welcome_pic{
+        width: 60%;
+        bottom: 0;
+    }
+
+    .attractions_img {
+        width: 100%;
+    }
+
+
+    .slogan{
+        left: 50px;
+        width: 370px;
+        margin: auto;
+    }
+
+    .search {
+        width: 80%;
+    }
+
+    #btn {
+        width: 15%;
+    }
+
+    input {
+        width: 65%;
+    }
+
+
+}
