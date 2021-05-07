@@ -9,7 +9,10 @@ window.onload = function () {
 
 let keyword;
 
+
+
 async function search_page(item) {
+
     let data;
     let cur_page = 0
     isMouseAtBottom = true;
@@ -31,6 +34,7 @@ async function search_page(item) {
             data = r.data;
             // console.log(data)
             find_pic(data, cur_page, data.length)
+
         }).catch(function(error) {    
             console.log(error)                 
             content.innerHTML="查無資料"
@@ -44,13 +48,17 @@ async function search_page(item) {
         for (let n = cur; n < lat; n++) {
             let info_name = document.createTextNode(data_source[n].name);
             let station_name = document.createTextNode(data_source[n].mrt);
-            let cat_name = document.createTextNode(data_source[n].category)
+            let cat_name = document.createTextNode(data_source[n].category);
+            let url_link = "/attraction/" + data_source[n].id
+            // console.log(url_link)
+
 
             let info_tag = document.createElement("div");
             let img_tag = document.createElement("div");
             let station_tag = document.createElement("div");
             let cat_tag = document.createElement("div");
             let box_tag = document.createElement("div");
+            let url_tag = document.createElement("a");
 
             img_tag.style.backgroundImage = "url('" + data_source[n].images[0] + "')";
 
@@ -60,16 +68,19 @@ async function search_page(item) {
             cat_tag.classList.add("cat");
             box_tag.classList.add("box");
 
+            url_tag.href = url_link;
+            console.log(url_tag)
             info_tag.appendChild(info_name);
             station_tag.appendChild(station_name);
             cat_tag.appendChild(cat_name);
 
-            box_tag.appendChild(img_tag);
-            box_tag.appendChild(info_tag);
-            box_tag.appendChild(station_tag);
-            box_tag.appendChild(cat_tag);
+            url_tag.appendChild(img_tag);
+            url_tag.appendChild(info_tag);
+            url_tag.appendChild(station_tag);
+            url_tag.appendChild(cat_tag);
+            box_tag.appendChild(url_tag);
             content.appendChild(box_tag);
-            // console.log(box_tag)
+            console.log(box_tag)
         }
         isMouseAtBottom = false;
     }

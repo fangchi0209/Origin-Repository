@@ -12,8 +12,8 @@ from flask import Flask, jsonify, render_template, request, abort
 
 mydb = mysql.connector.connect(
     host="127.0.0.1",
-    user="debian-sys-maint",
-    password="exgi5qGqkOVES8BL",
+    user="root",
+    password="mydog8229",
     database="attractions"
 )
 
@@ -150,4 +150,4 @@ def error_500(error):
 	
 
 
-app.run(host="0.0.0.0", port=3000,debug=True)
+app.run(host="127.0.0.1", port=3000,debug=True)
