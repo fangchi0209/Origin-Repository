@@ -1,4 +1,3 @@
-
 @import url(//fonts.googleapis.com/earlyaccess/notosanstc.css);
 
 body {
@@ -6,15 +5,12 @@ body {
     height: 100%;
 }
 
-html, body {
-    overflow-x:hidden;
-}
-
 nav {
     /* Navigation | Desktop */
     position: fixed;
     width: 100%;
     height: 54px;
+    top: -5px;
     background: white;
     display: flex;
     align-items: center;
@@ -38,10 +34,7 @@ nav {
     font-size: 30px;
     flex: auto;
     margin-left: 10px;
-}
 
-a {
-    text-decoration: none;
     /* Cyan 800 */
     color: #448899;
 }
@@ -59,6 +52,7 @@ a {
 }
 
 hr {
+    width: 100%;
     height: 54px;
     left: 0px;
 
@@ -69,18 +63,23 @@ hr {
 
 .section {
     width: 1200px;
+    min-height: 100%;
     margin: 20px auto;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     flex-wrap: wrap;
 }
 
 .album_box {
     display: flex;
     position: relative;
+    
+    left: 5px;
+    top: 0px;
+    margin-bottom: 10px;
     border-radius: 5px;
     overflow: hidden;
-    margin: 0px 5px;
+    margin: auto;
 
 }
 
@@ -91,6 +90,7 @@ hr {
     width: 540px;
     height: 400px;
     flex: none;
+    left:0;
 }
 
 .img {
@@ -98,6 +98,7 @@ hr {
     background-repeat: no-repeat;
     background-size: cover;
     flex: none;
+    float:left;
 }
 
 .arrow {
@@ -106,7 +107,10 @@ hr {
     z-index: 2;
     width: 40px;
     height: 40px;
+    font-size: 36px;
+    font-weight: bold;
     background-repeat: no-repeat;
+
     cursor: pointer;
 }
 
@@ -123,6 +127,8 @@ hr {
 .info {
     width: 600px;
     height: 400px;
+    left: 585px;
+    top: 0px;
     flex:none;
     display: flex;
     flex-direction: column;
@@ -134,7 +140,9 @@ hr {
     flex-direction: column;
     width: 100%;
     height: 70px;
-    margin: 10px auto;
+    margin-bottom: 10px;
+    left: 0px;
+    top: 0px;
 }
 
 .attraction_name {
@@ -174,7 +182,7 @@ hr {
     flex: none;
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: 600px;
     height: 302px;
     padding: 20px;
     box-sizing: border-box;
@@ -224,7 +232,7 @@ hr {
     display: flex;
     flex-direction: row;
     position: relative;
-    width: 50px;
+    width: 560px;
     height: 22px;
     flex: none;
     align-items: center;
@@ -266,7 +274,7 @@ hr {
 .time {
     display: flex;
     flex-direction: row;
-    width: 50px;
+    width: 560px;
     height: 22px;
     flex: none;
     position: relative;
@@ -568,49 +576,15 @@ hr {
 
 }
 
-@media (max-width:1199px) {
-
-    .section {
-        width: 90%;
-    }
-
-    .album_box {
-        width: 340px;
-    }
-
-    .album {
-        width: 340px;
-    }
-
-    .img {
-        width: 340px;
-    }
-
-
-    .info {
-        width: 340px;
-    }
-
-    .attraction_content {
-        width: 90%;
-    }
-
-    .description {
-        width: 100%;
-    }
-
-    .content_traffic {
-        width: 100%;
-    }
-}
-
 @media (max-width:800px) {
+
     .section {
         width: 90%;
     }
 
     .album_box {
         width: 340px;
+        margin: auto;
     }
 
     .album {
@@ -624,8 +598,13 @@ hr {
 
     .info {
         width: 340px;
+        margin: auto;
+
     }
 
+    .site {
+        text-align: center;
+    }
     
     .schedule {
         width: 340px;
@@ -652,5 +631,7 @@ hr {
     .content_traffic {
         width: 100%;
     }
+
+
 
 }
