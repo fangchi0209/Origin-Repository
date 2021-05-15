@@ -2,7 +2,7 @@ import json
 import ssl
 import traceback
 import mysql.connector
-from flask import Flask, jsonify, render_template, request, abort
+from flask import Flask, jsonify, render_template, request, abort, session, redirect
 
 
 # import urllib.request as request
@@ -12,8 +12,8 @@ from flask import Flask, jsonify, render_template, request, abort
 
 mydb = mysql.connector.connect(
     host="127.0.0.1",
-    user="debian-sys-maint",
-    password="exgi5qGqkOVES8BL",
+    user="root",
+    password="mydog8229",
     database="attractions"
 )
 
@@ -25,6 +25,7 @@ mycursor = mydb.cursor(buffered=True)
 app=Flask(__name__, static_folder = "static_data", static_url_path = "/")
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
+app.secret_key ="aaa"
 
 # Pages
 @app.route("/")
@@ -136,8 +137,6 @@ def findId(attractionId):
 		return json.dumps({"error": True,
 			"message": "請輸入正確的關鍵字"}),500
 
-
-
 @app.errorhandler(500)
 def error_500(error):
 	response = {
@@ -147,5 +146,96 @@ def error_500(error):
 	return jsonify(response), 500
 
 	
+@app.route("/api/user", methods=["GET", "POST", "PATCH", "DELETE"])
+def loginPage():
 
-app.run(host="0.0.0.0", port=3000,debug=True)
+	if request.method == "PATCH":
+		data = request.get_json()
+		sqlEmail = data['email']
+		sqlPassword = data ['password']
+		mycursor.execute ("SELECT * FROM member WHERE email = '%s'" % (sqlEmail))
+		loginResult = mycursor.fetchone()
+		print (loginResult)
+		try:
+			if loginResult != None:
+				if sqlPassword == loginResult[3]:
+					session["memberEmail"] = loginResult[2]
+					# return redirect("/")
+					return jsonify ({
+						"data": {
+							"id": loginResult[0],
+							"name": loginResult[1],
+							"email": loginResult[2]
+						}
+					}), 200
+				else:
+					return jsonify ({
+						"error": True,
+						"message": "密碼錯誤"
+					}), 400
+
+		except:
+			return jsonify ({
+				"error": True,
+				"message": "無此帳號"
+			}), 500
+
+	elif request.method == "POST":
+		data = request.get_json()
+		sqlName = data['name']
+		sqlEmail = data['email']
+		sqlPassword = data ['password']
+		mycursor.execute ("SELECT * FROM member WHERE email = '%s'" % (sqlEmail))
+		registerResult = mycursor.fetchone()
+
+		try:
+			if registerResult == None:
+				if len(sqlName)==0 or len(sqlEmail)==0 or len(sqlPassword)==0:
+					return jsonify({
+						"error": True,
+						"message": "請填妥所有資料"
+					}),400
+				else:
+					mycursor.execute("INSERT INTO member (name, email, password) VALUES (%s, %s, %s)", (sqlName, sqlEmail, sqlPassword))
+					mydb.commit()
+					return jsonify({
+						"ok": True,
+						"message": "註冊成功, 請重新登入"
+					}),200
+
+			else:
+				return jsonify ({
+					"error": True,
+					"message": "註冊失敗, Email重複註冊",
+					}),400
+				
+			
+		except:
+			return jsonify ({
+				"error": True,
+				"message": "伺服器內部錯誤"
+			}),500
+
+	elif request.method == "GET":
+		if "memberEmail" in session:
+			return jsonify({
+				"data": True,
+			})
+		else:
+			return jsonify({
+				"data": None,
+			})
+
+	elif request.method == "DELETE":
+		session.pop("memberEmail", None)
+		return jsonify({
+			"ok": True,
+		})
+		# return redirect("/")
+
+
+
+
+
+
+app.run(host="127.0.0.1", port=3000,debug=True)

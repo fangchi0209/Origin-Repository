@@ -3,13 +3,14 @@ let start_page = 0
 let isMouseAtBottom = false
 let content = document.getElementById('content');
 
+
+
 window.onload = function () {
     search_page(start_page)
+    checkProcess()
 }
 
 let keyword;
-
-
 
 async function search_page(item) {
 
@@ -17,14 +18,14 @@ async function search_page(item) {
     let cur_page = 0
     isMouseAtBottom = true;
     src="api/attractions?page="
-    console.log(item,keyword)
+    // console.log(item,keyword)
     if (item != null & keyword!=null){
         src+=`${start_page}&keyword=${keyword}`
     }else (
         src+=`${start_page}`
     )
 
-        console.log(src)
+        // console.log(src)
     await fetch(src)
         .then(response => {
             return response.json();
@@ -36,7 +37,7 @@ async function search_page(item) {
             find_pic(data, cur_page, data.length)
 
         }).catch(function(error) {    
-            console.log(error)                 
+            // console.log(error)                 
             content.innerHTML="查無資料"
 
           });
@@ -67,9 +68,10 @@ async function search_page(item) {
             station_tag.classList.add("station");
             cat_tag.classList.add("cat");
             box_tag.classList.add("box");
+            url_tag.classList.add("attractions_url")
 
             url_tag.href = url_link;
-            console.log(url_tag)
+            // console.log(url_tag)
             info_tag.appendChild(info_name);
             station_tag.appendChild(station_name);
             cat_tag.appendChild(cat_name);
@@ -80,7 +82,7 @@ async function search_page(item) {
             url_tag.appendChild(cat_tag);
             box_tag.appendChild(url_tag);
             content.appendChild(box_tag);
-            console.log(box_tag)
+            // console.log(box_tag)
         }
         isMouseAtBottom = false;
     }
@@ -98,15 +100,13 @@ window.addEventListener("scroll", () =>{
             if (isMouseAtBottom == false){
                 isMouseAtBottom=true;
                 start_page = next_page;
-                console.log(start_page)
+                // console.log(start_page)
 
                 search_page(start_page)
             }
         }
     }
 })
-
-
 
 
 let btn = document.getElementById("btn")
@@ -117,3 +117,167 @@ btn.addEventListener("click",()=>{
     search_page(start_page)
 
 })
+
+let memberBox_login = document.getElementById("memberBox_login");
+let memberBox_register = document.getElementById("memberBox_register");
+let loginBox = document.getElementById("loginBox");
+let registerBox = document.getElementById("registerBox");
+let bg = document.getElementById("bg");
+// 點選並彈出登入視窗和遮蓋層
+let adminBtn = document.getElementById("adminBtn");
+let bgBtn = document.getElementById("bgBtn")
+let logBtn = document.getElementById("logBtn")
+let regBtn = document.getElementById("regBtn")
+
+adminBtn.onclick = function() {
+    memberBox_login.style.display="block";
+    loginBox.style.display="block";
+    bg.style.display="block";
+    return false;
+}
+
+bgBtn.onclick = function() {
+    memberBox_login.style.display="none";
+    memberBox_register.style.display="none";
+    loginBox.style.display="none";
+    registerBox.style.display="none";
+    bg.style.display="none";
+    return false;
+}
+
+logBtn.onclick = function() {
+    memberBox_login.style.display="none";
+    memberBox_register.style.display="block";
+    loginBox.style.display="none";
+    registerBox.style.display="block";
+    bg.style.display="block";
+    return false;
+}
+
+regBtn.onclick = function() {
+    memberBox_login.style.display="block";
+    memberBox_register.style.display="none";
+    loginBox.style.display="block";
+    registerBox.style.display="none";
+    bg.style.display="block";
+    return false;
+}
+
+logoutBtn.onclick = ()=> {
+    deleteProcess()
+}
+
+
+document.getElementById("loginBox").onclick= (r) => {
+    r.preventDefault()
+}
+
+document.getElementById("registerBox").onclick= (e) => {
+    e.preventDefault()
+}
+
+
+async function loginProcess () {
+
+    await fetch ("/api/user", {
+        method:"PATCH",
+        headers: {
+            "content-type": "application/json"
+        },
+        body: JSON.stringify({
+            email: document.getElementById("logEmail").value,
+            password: document.getElementById("logPassword").value,
+        })
+    })
+
+        .then (response => {
+            return response.json()
+        })
+        .then (data => {
+            console.log(data)
+            if (data.error == true){
+                document.getElementById("failLogin").style.display = "block";
+                document.getElementById("failLogin").innerHTML = data.message
+            }else {
+                window.location = '/'
+                // document.getElementById("failLogin").style.display = "none";
+            }
+        })
+
+        .catch(function(error) {    
+            // console.log(error)
+            document.getElementById("failLogin").style.display = "block";             
+            document.getElementById("failLogin").innerHTML="無此帳號";
+          });
+}
+
+async function registerProcess() {
+
+    await fetch ("/api/user", {
+            method: "POST",
+            headers: {
+                "content-type": "application/json"
+            },
+            body: JSON.stringify({
+                name: document.getElementById("regName").value,
+                email: document.getElementById("regEmail").value,
+                password: document.getElementById("regPassword").value,
+            }),
+        })
+            .then (response => {
+                return response.json()
+            })
+            .then (data => {
+                if (data.error == true){
+                    document.getElementById("fail").innerHTML = data.message
+                }else {
+                    document.getElementById("fail").innerHTML = data.message
+                }
+            })
+            .catch(function(error) {    
+                // console.log(error)
+                document.getElementById("fail").style.display = "block";             
+                document.getElementById("fail").innerHTML="伺服器內部錯誤";
+              });
+
+}
+
+async function checkProcess() {
+    await fetch ("/api/user", {method: "GET"})
+
+    .then (response => {
+        return response.json()
+    })
+    .then (res => {
+        console.log(res)
+        if (res.data == true){
+            document.getElementById("adminBtn").style.display = "none";
+            document.getElementById("logoutBtn").style.display = "block";
+        }else {
+            document.getElementById("adminBtn").style.display = "block";
+            document.getElementById("logoutBtn").style.display = "none";
+        }
+    })
+}
+
+async function deleteProcess() {
+    await fetch ("/api/user", {
+        method: "DELETE",
+        headers: {
+            "content-type": "application/json"
+        },
+    })
+
+    .then (response => {
+        return response.json()
+    })
+    .then (result => {
+        if (result.ok == true){
+            window.location = '/'
+            // document.getElementById("adminBtn").style.display = "block";
+            // document.getElementById("logoutBtn").style.display = "none";
+            
+        }
+    })
+}
+

@@ -18,6 +18,7 @@ let width_p = 0;
 window.onload = function () {
     showOneData(src_id);
     handleClick("1")
+    checkProcess()
 }
 
 
@@ -45,7 +46,7 @@ async function showOneData(attractionId) {
         let attraction_cat = document.createTextNode(r.category);
 
         let attraction_mrt_cat = attraction_cat.nodeValue + "&nbsp" + "at" + "&nbsp" +  attraction_mrt.nodeValue
-        console.log(attraction_mrt_cat)
+        // console.log(attraction_mrt_cat)
 
         let name_tag = document.createElement("div");
         let place_tag = document.createElement("div");
@@ -163,24 +164,6 @@ function windowSize() {
 }
 
 
-
-// next.addEventListener("click",(e)=>{
-
-//     e.preventDefault()
-//     animate_right(-540);
-
-// })
-
-
-// prev.addEventListener("click",(e)=>{
-
-//     e.preventDefault()
-//     animate_left(540);
-
-// })
-
-
-
 function animate_right(offset, b) {
 
     if (b && length_pic && newLeft <= offset * (length_pic - 1)) {
@@ -192,8 +175,8 @@ function animate_right(offset, b) {
     }
     id = parseInt(newLeft/offset)+1
     album.style.left = newLeft + 'px';
-    console.log(offset)
-    console.log(id)
+    // console.log(offset)
+    // console.log(id)
 }
 
 function animate_left(offset, b) {
@@ -206,13 +189,175 @@ function animate_left(offset, b) {
     id = parseInt(newLeft/-offset)+1
     album.style.left = newLeft + 'px';
 
-    console.log(id)
+    // console.log(id)
 }
 
 
 windowSize();
 
 
+let memberBox_login = document.getElementById("memberBox_login");
+let memberBox_register = document.getElementById("memberBox_register");
+let loginBox = document.getElementById("loginBox");
+let registerBox = document.getElementById("registerBox");
+let bg = document.getElementById("bg");
+// 點選並彈出登入視窗和遮蓋層
+let adminBtn = document.getElementById("adminBtn");
+let bgBtn = document.getElementById("bgBtn")
+let logBtn = document.getElementById("logBtn")
+let regBtn = document.getElementById("regBtn")
+
+adminBtn.onclick = function() {
+    memberBox_login.style.display="block";
+    loginBox.style.display="block";
+    bg.style.display="block";
+    return false;
+}
+
+bgBtn.onclick = function() {
+    memberBox_login.style.display="none";
+    memberBox_register.style.display="none";
+    loginBox.style.display="none";
+    registerBox.style.display="none";
+    bg.style.display="none";
+    return false;
+}
+
+logBtn.onclick = function() {
+    memberBox_login.style.display="none";
+    memberBox_register.style.display="block";
+    loginBox.style.display="none";
+    registerBox.style.display="block";
+    bg.style.display="block";
+    return false;
+}
+
+regBtn.onclick = function() {
+    memberBox_login.style.display="block";
+    memberBox_register.style.display="none";
+    loginBox.style.display="block";
+    registerBox.style.display="none";
+    bg.style.display="block";
+    return false;
+}
+
+logoutBtn.onclick = ()=> {
+    deleteProcess()
+}
+
+
+document.getElementById("loginBox").onclick= (r) => {
+    r.preventDefault()
+}
+
+document.getElementById("registerBox").onclick= (e) => {
+    e.preventDefault()
+}
+
+
+async function loginProcess () {
+
+    await fetch ("/api/user", {
+        method:"PATCH",
+        headers: {
+            "content-type": "application/json"
+        },
+        body: JSON.stringify({
+            email: document.getElementById("logEmail").value,
+            password: document.getElementById("logPassword").value,
+        })
+    })
+
+        .then (response => {
+            return response.json()
+        })
+        .then (data => {
+            console.log(data)
+            if (data.error == true){
+                document.getElementById("failLogin").style.display = "block";
+                document.getElementById("failLogin").innerHTML = data.message
+            }else {
+                window.location = '/'
+                // document.getElementById("failLogin").style.display = "none";
+            }
+        })
+
+        .catch(function(error) {    
+            // console.log(error)
+            document.getElementById("failLogin").style.display = "block";             
+            document.getElementById("failLogin").innerHTML="無此帳號";
+          });
+}
+
+async function registerProcess() {
+
+    await fetch ("/api/user", {
+            method: "POST",
+            headers: {
+                "content-type": "application/json"
+            },
+            body: JSON.stringify({
+                name: document.getElementById("regName").value,
+                email: document.getElementById("regEmail").value,
+                password: document.getElementById("regPassword").value,
+            }),
+        })
+            .then (response => {
+                return response.json()
+            })
+            .then (data => {
+                if (data.error == true){
+                    document.getElementById("fail").innerHTML = data.message
+                }else {
+                    document.getElementById("fail").innerHTML = data.message
+                }
+            })
+            .catch(function(error) {    
+                // console.log(error)
+                document.getElementById("fail").style.display = "block";             
+                document.getElementById("fail").innerHTML="伺服器內部錯誤";
+              });
+
+}
+
+async function checkProcess() {
+    await fetch ("/api/user", {method: "GET"})
+
+    .then (response => {
+        return response.json()
+    })
+    .then (res => {
+        console.log(res)
+        if (res.data == true){
+            document.getElementById("adminBtn").style.display = "none";
+            document.getElementById("logoutBtn").style.display = "block";
+        }else {
+            document.getElementById("adminBtn").style.display = "block";
+            document.getElementById("logoutBtn").style.display = "none";
+        }
+    })
+}
+
+async function deleteProcess() {
+    await fetch ("/api/user", {
+        method: "DELETE",
+        headers: {
+            "content-type": "application/json"
+        },
+    })
+
+    .then (response => {
+        return response.json()
+    })
+    .then (result => {
+        if (result.ok == true){
+            window.location = '/'
+            // document.getElementById("adminBtn").style.display = "block";
+            // document.getElementById("logoutBtn").style.display = "none";
+            
+        }
+    })
+}
 
 
 
