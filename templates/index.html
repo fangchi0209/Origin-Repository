@@ -15,11 +15,40 @@
 <body>
     <nav>
         <div class="first">
-            <div class="header">台北一日遊</div>
+            <div class="header"><a href="/">台北一日遊</a></div>
             <div class="menu">預定行程</div>
-            <div class="menu">登入/註冊</div>
+            <div class="menu"><a id="adminBtn" href="javascript:void(0)">登入/註冊</a></div>
+            <div class="menu"><a id="logoutBtn" href="javascript:void(0)">登出</a></div>
         </div>
     </nav>
+
+    <!-- 遮蓋層 -->
+    <label><a id="bgBtn" href="javascript:void(0)"><div id="bg" class="bg">sada</div></a></label>
+
+    <div id="memberBox_login" class="memberBox">
+
+        <form action="/api/user" id=loginBox style="display: none" method="GET">
+            <p class="memberTitle">登入會員帳號</p>
+            <input type="text" id="logEmail" class="inputBox" name="logEmail" placeholder="輸入電子信箱"><br>
+            <input type="password" id="logPassword" class="inputBox" name="logPassword" placeholder="輸入密碼"><br>
+            <button class="memBtn" onclick= "loginProcess()">登入帳戶</button><br>
+            <p class="popupWord"><span id="failLogin"></span></p>
+            <p class="memberLink"><a id="logBtn" href="javascript:void(0)">還沒有帳戶？點此註冊</a></p>
+        </form>
+    </div>
+
+    <div id ="memberBox_register" class="memberBox">
+        <form action="/api/user" id=registerBox style="display: none" method="POST">
+            <p class="memberTitle">註冊會員帳號</p>
+            <input type="text" id="regName" class="inputBox" name="regName" placeholder="輸入姓名"><br>
+            <input type="text" id="regEmail" class="inputBox" name="regEmail" placeholder="輸入電子郵件" required><br>
+            <input type="password" id="regPassword" class="inputBox" name="regPassword" placeholder="輸入密碼"><br>
+            <button class="memBtn" onclick= "registerProcess()">註冊新帳戶</button><br>
+            <p class="popupWord"><span id="fail"></span></p>
+            <p class="memberLink"><a id="regBtn" href="javascript:void(0)">已經有帳戶了？點此登入</a></p>
+        </form>
+    </div>
+
 
     <div class="welcome">
         <img class="welcome_pic" src="/img/welcome1.png"></img>
@@ -29,7 +58,7 @@
                 <p style="font-size:16px">探索每個角落,體驗城市的深度旅遊行程</p>
 
             <div class="search">
-                <input type="text" id= "searchKeyword" name="keyword" placeholder="輸入景點名稱查詢">
+                <input type="text" id= "searchKeyword" class="searchBox" name="keyword" placeholder="輸入景點名稱查詢">
                 <button id="btn">
                     <div class="search_icon"></div>
                 </button>
@@ -45,6 +74,9 @@
     <div class="footer">
         COPYRIGHT © 2021 台北一日遊
     </div>
+
+
+
 
 
     <script src="/index.js"></script>

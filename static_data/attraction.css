@@ -11,7 +11,6 @@ html, body {
 }
 
 nav {
-    /* Navigation | Desktop */
     position: fixed;
     width: 100%;
     height: 54px;
@@ -26,46 +25,113 @@ nav {
     height: 34px;
     display: flex;
     margin: 0px auto;
-
 }
-
 
 .header {
     /* 台北一日遊 */
     font-family: Noto Sans TC;
-    font-style: normal;
     font-weight: bold;
     font-size: 30px;
     flex: auto;
     margin-left: 10px;
 }
 
-a {
+.header a {
     text-decoration: none;
-    /* Cyan 800 */
     color: #448899;
 }
 
 .menu {
-    /* Body - Reg 16(13.3) */
     font-family: Noto Sans TC;
-    font-style: normal;
-    font-weight: normal;
     font-size: 16px;
     margin: 10px;
     color: #666666;
-    flex: none;
     margin: 10px 10px;
 }
 
 hr {
     height: 54px;
     left: 0px;
-
-    /* Gray 300 */
     border: 1px solid #E8E8E8;
 
 }
+
+#adminBtn, #logoutBtn {
+    text-decoration: none;
+    color: #666666;
+}
+
+.memberBox {
+    position: absolute;
+    left: 50%;
+    top: 80px;
+    transform: translateX(-50%);
+    background: #FFFFFF;
+    box-shadow: 0px 4px 60px #AAAAAA;
+    padding: 10px;
+    border-radius: 6px;
+    z-index: 999;
+    display: none;
+}
+
+.memberTitle {
+    font-family: Noto Sans TC;
+    font-weight: bold;
+    font-size: 24px;
+    color: #666666;
+    text-align: center;
+    margin: 10px;
+}
+
+
+.inputBox {
+    width: 310px;
+    padding: 10px;
+    margin: 5px;
+    background: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    box-sizing: border-box;
+    border-radius: 5px;
+    font-family: Noto Sans TC;
+    font-size: 16px;
+
+    color: #666666;
+
+}
+
+.memBtn {
+    width: 310px;
+    background: #448899;
+    border-radius: 5px;
+    margin: 5px;
+    border: none;
+    font-family: Noto Sans TC;
+    font-size: 19px;
+    color: #FFFFFF;
+    }
+
+.memberLink {
+    width: 310px;
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    text-align:center;
+    margin: 5px;
+}
+
+#logBtn, #regBtn {
+    text-decoration: none;
+    color: #666666;
+}
+
+.popupWord {
+    width: 310px;
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    color: red;
+    text-align:center;
+    margin: 0px;
+}
+
 
 .section {
     width: 1200px;
@@ -90,7 +156,6 @@ hr {
     position: relative;
     width: 540px;
     height: 400px;
-    flex: none;
 }
 
 .img {
@@ -123,13 +188,11 @@ hr {
 .info {
     width: 600px;
     height: 400px;
-    flex:none;
     display: flex;
     flex-direction: column;
 }
 
 .site {
-    flex: none;
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -138,85 +201,46 @@ hr {
 }
 
 .attraction_name {
-    flex: none;
     width: 100%;
     height: 33px;
-    left: 0px;
-    top: 0px;
-
     font-family: Noto Sans TC;
-    font-style: normal;
     font-weight: bold;
     font-size: 24px;
-
-    /* Gray 800 */
     color: #666666;
 }
 
 .place {
-    flex: none;
     width: 100%;
     height: 22px;
-    left: 0px;
-    top: 48px;
     margin: 10px 0px;
-
     font-family: Noto Sans TC;
-    font-style: normal;
-    font-weight: normal;
     font-size: 16px;
-
-    /* Gray 800 */
     color: #666666;
 }
 
 .schedule {
-    flex: none;
     display: flex;
     flex-direction: column;
     width: 100%;
     height: 302px;
     padding: 20px;
     box-sizing: border-box;
-    
-
-    /* Gray 300 */
     background: #E8E8E8;
     border-radius: 5px;
     justify-content: space-around;
 }
 
 .schedule_title {
-    /* position: relative;
-    width: 100%;
-    height: 22px;
-    left: 20px; */
-
     font-family: Noto Sans TC;
-    font-style: normal;
     font-weight: bold;
     font-size: 16px;
-    /* flex: none; */
-
-    /* Gray 800 */
     color: #666666;
 }
 
 .schedule_subtitle {
-    /* position:relative;
-    width: 100%;
-    height: 24px;
-    left: 20px; */
-    
-
     font-family: Noto Sans TC;
-    font-style: normal;
-    font-weight: normal;
     font-size: 16px;
     line-height: 23px;
-    /* flex: none; */
-
-    /* Gray 800 */
     color: #666666;
 }
 
@@ -226,38 +250,24 @@ hr {
     position: relative;
     width: 50px;
     height: 22px;
-    flex: none;
     align-items: center;
 }
 
 .schedule_date {
-    width: 81px;
-    height: 17px;
-    left: 0px;
-    top: 9px;
-
-
     font-family: Noto Sans TC;
-    font-style: normal;
     font-weight: bold;
     font-size: 16px;
     flex: none;
-
-    /* Gray 800 */
     color: #666666;
 }
 
 #calendar {
     width: 193px;
     height: 22px;
-    left: 86px;
-    top: 0px;
     padding: 5px;
     flex: none;
 
     font-family: Noto Sans TC;
-    font-style: normal;
-    font-weight: normal;
     font-size: 16px;
     
     color: #000000;
@@ -268,25 +278,13 @@ hr {
     flex-direction: row;
     width: 50px;
     height: 22px;
-    flex: none;
-    position: relative;
-    
 }
 
 .schedule_time {
-    width: 81px;
-    height: 22px;
-    left: 0px;
-    top: 0px;
     font-family: Noto Sans TC;
-    font-style: normal;
     font-weight: bold;
     font-size: 16px;
-    align-items: center;
-    align-content: center;
-    
     flex: none;
-
     color: #666666;
 }
 
@@ -296,13 +294,8 @@ hr {
     height: 22px;
     margin: 0px 10px 0px 30px;
     font-family: Noto Sans TC;
-    font-style: normal;
-    font-weight: normal;
     font-size: 16px;
     text-align: center;
-
-
-    /* Gray 800 */
     color: #666666;
 }
 
@@ -352,78 +345,47 @@ hr {
   }
 
   .fee {
-        position: relative;
-        top: 0px;
-
         display: flex;
-        flex:none;
-        
-        /* Gray 800 */
         color: #666666;
   }
 
   .total {
-    left: 0px;
-    top: 0px;
-    
     font-family: Noto Sans TC;
-    font-style: normal;
     font-weight: bold;
     font-size: 16px;
-
     color: #666666;
   }
 
   .total_1 {
-    left: 86px;
-    top: 4px;
-    
     font-family: Noto Sans TC;
-    font-style: normal;
-    font-weight: normal;
     font-size: 16px;
-    
     color: #666666;
   }
 
   .total_2 {
     font-family: Noto Sans TC;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 16px;
-    
-    flex: none;
-    
+    font-size: 16px; 
     color: #666666;
   }
 
 
 
   button { 
-    flex: none;
-    position: relative;
     width: 154px;
     height: 36px;
-    margin-bottom: 20px;
-
     font-family: Noto Sans TC;
-    font-style: normal;
-    font-weight: normal;
     font-size: 19px;
     color: #FFFFFF;
-
-    /* Cyan 800 */
     background: #448899;
     border-radius: 5px;
     border: none;
   }
 
   .hr2 {
-    width: 1198px;
+    width: 100%;
     height: 0px;
     margin: 20px auto;
     border: 1px solid #E8E8E8;
-    flex: none;
   }
 
   .attraction_content {
@@ -434,117 +396,54 @@ hr {
   }
 
   #description_info {
-      flex: none;
-      margin-bottom: 20px;
+      margin: 0px 10px;
   }
 
   .description {
-    width: 1180px;
-    left: 10px;
-    top: 10px;
-    margin: auto;
-    
     font-family: Noto Sans TC;
-    font-style: normal;
-    font-weight: normal;
     font-size: 16px;
-    line-height: 23px;
-    
-    /* Gray 800 */
-    
-    color: #666666;
-    
+    line-height: 27px;
+    color: #666666;  
   }
 
   #location_info {
     display: flex;
     flex-direction: column;
-    flex: none;
+    margin: 20px 10px 10px 10px;
   }
 
   .location {
-    width: 1180px;
-    left: 10px;
-    top: 126px;
-    margin: auto;
-    
     font-family: Noto Sans TC;
-    font-style: normal;
     font-weight: bold;
     font-size: 16px;
-    flex: none;
-    
-    /* Gray 800 */
-    
+    line-height: 27px;
     color: #666666;
-
   }
 
   .content_location {
-    width: 1180px;
-    left: 10px;
-    margin: -2px auto;
-    
-    /* Content - Reg 16(Auto) */
-    
     font-family: Noto Sans TC;
-    font-style: normal;
-    font-weight: normal;
     font-size: 16px;
-    flex: none;
-    
-    
-    /* Gray 800 */
-    
     color: #666666;
-
   }
   
   #traffic_info {
     display: flex;
     flex-direction: column;
-    flex: none;
-    margin-bottom: 70px;
+    margin: 20px 10px 70px 10px;
   }
 
 
-  .traffic {
-    width: 1180px;
-    left: 10px;
-    top: 202px;
-    margin: 20px auto 5px auto;
-    
-    
+  .traffic { 
     font-family: Noto Sans TC;
-    font-style: normal;
     font-weight: bold;
     font-size: 16px;
-    flex: none;
-
-    
-    display: flex;
-    align-items: center;
-    
-    /* Gray 800 */
     color: #666666;
   }
 
   .content_traffic {
-    width: 1180px;
-    left: 10px;
-    top: 234px;
-    margin: auto;
-    
-    /* Content - Reg 16(Auto) */
-    
     font-family: Noto Sans TC;
-    font-style: normal;
-    font-weight: normal;
     font-size: 16px;
-    flex: none;
-    
-    /* Gray 800 */
-    
+    line-height: 27px;
     color: #666666;
     
   }
@@ -562,10 +461,22 @@ hr {
     background: #757575;
     color: white;
     font-family: Noto Sans TC;
-    font-style: normal;
     font-weight: bold;
     font-size: 16px;
 
+}
+
+.bg{
+    background-color: #000;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    position: fixed;
+    opacity: 0.3;
+    -webkit-opacity: 0.3;
+    -moz-opacity: 0.3;
+    display: none;
+    z-index: 100;
 }
 
 @media (max-width:1199px) {
@@ -578,29 +489,16 @@ hr {
         width: 340px;
     }
 
-    .album {
-        width: 340px;
-    }
-
     .img {
         width: 340px;
     }
 
-
     .info {
         width: 340px;
-    }
+    } 
 
     .attraction_content {
         width: 90%;
-    }
-
-    .description {
-        width: 100%;
-    }
-
-    .content_traffic {
-        width: 100%;
     }
 }
 
@@ -613,44 +511,17 @@ hr {
         width: 340px;
     }
 
-    .album {
-        width: 340px;
-    }
-
     .img {
         width: 340px;
     }
 
-
     .info {
         width: 340px;
-    }
-
-    
-    .schedule {
-        width: 340px;
-        margin: auto;
-    }
-
-    .schedule_subtitle {
-        margin-bottom: 10px;
-    }
-
-    .hr2 {
-        width: 100%;
-        margin-left: 5px
     }
 
     .attraction_content {
         width: 90%;
     }
 
-    .description {
-        width: 100%;
-    }
-
-    .content_traffic {
-        width: 100%;
-    }
 
 }
