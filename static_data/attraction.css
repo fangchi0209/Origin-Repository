@@ -475,7 +475,8 @@ hr {
     opacity: 0.3;
     -webkit-opacity: 0.3;
     -moz-opacity: 0.3;
-   display: none;
+    display: none;
+    z-index: 100;
 }
 
 @media (max-width:1199px) {

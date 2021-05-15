@@ -12,8 +12,8 @@ from flask import Flask, jsonify, render_template, request, abort, session, redi
 
 mydb = mysql.connector.connect(
     host="127.0.0.1",
-    user="root",
-    password="mydog8229",
+    user="debian-sys-maint",
+    password="exgi5qGqkOVES8BL",
     database="attractions"
 )
 
@@ -238,4 +238,4 @@ def loginPage():
 
 
 
-app.run(host="127.0.0.1", port=3000,debug=True)
+app.run(host="0.0.0.0", port=3000,debug=True)
