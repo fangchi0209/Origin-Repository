@@ -14,11 +14,11 @@ let width_p = 0;
 
 
 
-
 window.onload = function () {
     showOneData(src_id);
     handleClick("1")
     checkProcess()
+    handleClick("早上 9 點到下午 4 點")
 }
 
 
@@ -34,6 +34,7 @@ async function showOneData(attractionId) {
         }).then(result => {
             displayInfo(result);
             length_pic = result.data.images.length
+            
         })
     function displayInfo(result) {
         let r = result.data;
@@ -92,14 +93,17 @@ async function showOneData(attractionId) {
         location_info.appendChild(address_tag);
         traffic_info.appendChild(traffic_tag);
 
+        
 
     }
 }
 
 
+
+
 function handleClick(value_total) {
 
-    if (value_total == "1") {
+    if (value_total == "早上 9 點到下午 4 點") {
         document.getElementById("total_1").style.display = '';
         document.getElementById("total_2").style.display = 'none'
     } else {
@@ -196,6 +200,9 @@ function animate_left(offset, b) {
 windowSize();
 
 
+
+
+
 let memberBox_login = document.getElementById("memberBox_login");
 let memberBox_register = document.getElementById("memberBox_register");
 let loginBox = document.getElementById("loginBox");
@@ -206,6 +213,7 @@ let adminBtn = document.getElementById("adminBtn");
 let bgBtn = document.getElementById("bgBtn")
 let logBtn = document.getElementById("logBtn")
 let regBtn = document.getElementById("regBtn")
+let tourBtn = document.getElementById("tourBtn")
 
 adminBtn.onclick = function() {
     memberBox_login.style.display="block";
@@ -245,6 +253,16 @@ logoutBtn.onclick = ()=> {
     deleteProcess()
 }
 
+tourBtn.onclick = () => {
+    if (document.getElementById("logoutBtn").style.display == "block"){
+        window.location = '/booking'
+    } else {
+        document.getElementById("memberBox_login").style.display="block"
+        document.getElementById("loginBox").style.display="block"
+        document.getElementById("bg").style.display="block"
+    }
+}
+
 
 document.getElementById("loginBox").onclick= (r) => {
     r.preventDefault()
@@ -253,6 +271,9 @@ document.getElementById("loginBox").onclick= (r) => {
 document.getElementById("registerBox").onclick= (e) => {
     e.preventDefault()
 }
+
+
+
 
 
 async function loginProcess () {
@@ -272,12 +293,13 @@ async function loginProcess () {
             return response.json()
         })
         .then (data => {
-            console.log(data)
+            // console.log(data)
             if (data.error == true){
                 document.getElementById("failLogin").style.display = "block";
                 document.getElementById("failLogin").innerHTML = data.message
             }else {
-                window.location = '/'
+                location.reload()
+                // window.location = '/'
                 // document.getElementById("failLogin").style.display = "none";
             }
         })
@@ -327,7 +349,7 @@ async function checkProcess() {
         return response.json()
     })
     .then (res => {
-        console.log(res)
+        // console.log(res)
         if (res.data == true){
             document.getElementById("adminBtn").style.display = "none";
             document.getElementById("logoutBtn").style.display = "block";
@@ -358,6 +380,60 @@ async function deleteProcess() {
         }
     })
 }
+
+
+
+document.getElementById("bookingInfo").onclick= (u) => {
+    u.preventDefault()
+}
+
+
+async function bookProcedure (){
+
+    let NT = 0
+    let dayTimeValue = document.querySelector('input[name="dayTime"]:checked').value
+    if (dayTimeValue == "早上 9 點到下午 4 點"){
+        NT = document.getElementsByClassName('total_1')[0].innerHTML
+    } else {
+        NT = document.getElementsByClassName('total_1')[1].innerHTML
+    }
+
+    let db = {
+        attractionId: src_id,
+        date: document.getElementById("calendar").value,
+        time2: dayTimeValue,
+        price: NT
+    }
+        
+    await fetch ("/api/booking",{
+        method: "POST",
+        headers:{
+            "content-type": "application/json",
+        },
+        body: JSON.stringify(db)
+    })
+    .then (response => {
+        return response.json()
+    })
+    .then (data => {
+        if (data.error == false){
+            console.log(data.message)
+            document.getElementById("memberBox_login").style.display="block"
+            document.getElementById("loginBox").style.display="block"
+            document.getElementById("bg").style.display="block"
+        }else if (data.error == true){
+            console.log(data.message)
+        }
+        else {
+        window.location = '/booking'
+        }
+    })
+
+    .catch(function(error) {    
+        console.log(error)           
+      });
+}
+    
 
 
 

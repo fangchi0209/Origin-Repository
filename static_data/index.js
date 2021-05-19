@@ -128,6 +128,7 @@ let adminBtn = document.getElementById("adminBtn");
 let bgBtn = document.getElementById("bgBtn")
 let logBtn = document.getElementById("logBtn")
 let regBtn = document.getElementById("regBtn")
+let tourBtn = document.getElementById("tourBtn")
 
 adminBtn.onclick = function() {
     memberBox_login.style.display="block";
@@ -165,6 +166,16 @@ regBtn.onclick = function() {
 
 logoutBtn.onclick = ()=> {
     deleteProcess()
+}
+
+tourBtn.onclick = () => {
+    if (document.getElementById("logoutBtn").style.display == "block"){
+        window.location = '/booking'
+    } else {
+        document.getElementById("memberBox_login").style.display="block"
+        document.getElementById("loginBox").style.display="block"
+        document.getElementById("bg").style.display="block"
+    }
 }
 
 

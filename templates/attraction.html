@@ -16,7 +16,7 @@
     <nav>
         <div class="first">
             <div class="header"><a href="/">台北一日遊</a></div>
-            <div class="menu">預定行程</div>
+            <div class="menu"><a id="tourBtn" href="javascript:void(0)">預定行程</a></div>
             <div class="menu"><a id="adminBtn" href="javascript:void(0)">登入/註冊</a></div>
             <div class="menu"><a id="logoutBtn" href="javascript:void(0)">登出</a></div>
         </div>
@@ -58,35 +58,39 @@
             <a href="javascript:;" id="next" class="arrow" style="background-image:url('/img/btn_rightArrow.png')"></a>
             <div id="album" class="album"></div>
         </div>
-        <div id="info" class="info">
-            <div id="site" class="site">
-                
-            </div>
-            <div class="schedule">
-                <div class="schedule_title">訂購導覽行程</div>
-                <div class="schedule_subtitle">以此景點為中心的一日行程，帶您探索城市角落故事</div>
-                <div class="date">
-                    <div class="schedule_date">選擇日期：</div>
-                    <input type="date" id="calendar" name="calendar">
-                </div>
-                <div class="time">
-                    <div class="schedule_time">選擇時間：</div>
-                    <label class="container">
-                        上半天<input type="radio" checked="checked" name="dayTime" value="1" onclick="handleClick(this.value);"><span class="checkmark"></span>
-                    </label>
-                    <label class="container">
-                        下半天<input type="radio" name="dayTime" value="2" onclick="handleClick(this.value);"><span class="checkmark"></span>
-                    </label>
+
+            <div id="info" class="info">
+                <div id="site" class="site">
                     
                 </div>
-                <div class="fee">
-                    <div class="total">導覽費用：</div>
-                    <div id="total_1" class="total_1">新台幣 2000 元</div>
-                    <div id="total_2" class="total_2">新台幣 2500 元</div>
+                <div class="schedule">
+                    <div class="schedule_title">訂購導覽行程</div>
+                    <div class="schedule_subtitle">以此景點為中心的一日行程，帶您探索城市角落故事</div>
+                    <div class="date">
+                        <div class="schedule_date">選擇日期：</div>
+                        <input type="date" id="calendar" name="calendar">
+                    </div>
+                    <div class="time">
+                        <div class="schedule_time">選擇時間：</div>
+                        <label class="container">
+                            上半天<input type="radio" checked="checked" name="dayTime" value="早上 9 點到下午 4 點" onclick="handleClick(this.value);"><span class="checkmark"></span>
+                        </label>
+                        <label class="container">
+                            下半天<input type="radio" name="dayTime" value="早上 4 點到下午 9 點" onclick="handleClick(this.value);"><span class="checkmark"></span>
+                        </label>
+                        
+                    </div>
+                    <div class="fee">
+                        <div class="total">導覽費用：</div>
+                        <div id="total_1" class="total_1">新台幣 2000 元</div>
+                        <div id="total_2" class="total_1">新台幣 2500 元</div>
+                    </div>
+                    <form action="/api/booking" id="bookingInfo" method="POST">
+                        <button id="bookBtn" onclick="bookProcedure()">開始預定行程</button>
+                    </form>
                 </div>
-                <button>開始預定行程</button>
             </div>
-        </div>
+   
 
         <hr class="hr2">
 

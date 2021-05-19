@@ -118,7 +118,7 @@ hr {
     margin: 5px;
 }
 
-#logBtn, #regBtn {
+#tourBtn, #adminBtn, #logoutBtn, #logBtn, #regBtn {
     text-decoration: none;
     color: #666666;
 }
@@ -362,15 +362,7 @@ hr {
     color: #666666;
   }
 
-  .total_2 {
-    font-family: Noto Sans TC;
-    font-size: 16px; 
-    color: #666666;
-  }
-
-
-
-  button { 
+  #bookBtn { 
     width: 154px;
     height: 36px;
     font-family: Noto Sans TC;
