@@ -273,7 +273,7 @@ def bookingPage():
 							"id": bookingResult[0],
 							"name": bookingResult[1],
 							"address": bookingResult[4],
-							"image": bookingResult[9].split(",")
+							"image": bookingResult[9].split(",")[0]
 							},
 							"date": session["date"],
 							"time": session["time"],

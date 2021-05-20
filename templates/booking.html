@@ -696,7 +696,7 @@
                         document.getElementById("time").innerHTML = res.data.time
                         document.getElementById("fee").innerHTML = res.data.price
                         document.getElementById("place").innerHTML = res.data.attraction.address
-                        document.getElementById("tourPic").style.backgroundImage = "url('" + res.data.attraction.image[0] + "')"
+                        document.getElementById("tourPic").style.backgroundImage = "url('" + res.data.attraction.image + "')"
                         document.getElementById("ps").innerHTML = res.data.price
                     }
                 })

@@ -418,11 +418,11 @@ async function bookProcedure (){
     .then (data => {
         if (data.error == false){
             console.log(data.message)
-            document.getElementById("memberBox_login").style.display="block"
-            document.getElementById("loginBox").style.display="block"
-            document.getElementById("bg").style.display="block"
+            document.getElementById("memberBox_login").style.display = "block"
+            document.getElementById("loginBox").style.display = "block"
+            document.getElementById("bg").style.display = "block"
         }else if (data.error == true){
-            console.log(data.message)
+            document.getElementById("notice").innerHTML = data.message
         }
         else {
         window.location = '/booking'
