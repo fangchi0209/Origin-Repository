@@ -17,8 +17,8 @@
         <div class="first">
             <div class="header"><a href="/">台北一日遊</a></div>
             <div class="menu"><a id="tourBtn" href="javascript:void(0)">預定行程</a></div>
-            <div class="menu"><a id="adminBtn" href="javascript:void(0)">登入/註冊</a></div>
-            <div class="menu"><a id="logoutBtn" href="javascript:void(0)">登出</a></div>
+            <div class="menu"><a id="adminBtn" href="javascript:void(0)"></a></div>
+            <!-- <div class="menu"><a id="logoutBtn" href="javascript:void(0)">登出</a></div> -->
         </div>
     </nav>
     <hr> 
@@ -26,28 +26,35 @@
     <!-- 遮蓋層 -->
     <label><a id="bgBtn" href="javascript:void(0)"><div id="bg" class="bg">sada</div></a></label>
 
-    <div id="memberBox_login" class="memberBox">
-
-        <form action="/api/user" id=loginBox style="display: none" method="GET">
-            <p class="memberTitle">登入會員帳號</p>
-            <input type="text" id="logEmail" class="inputBox" name="logEmail" placeholder="輸入電子信箱"><br>
-            <input type="password" id="logPassword" class="inputBox" name="logPassword" placeholder="輸入密碼"><br>
-            <button class="memBtn" onclick= "loginProcess()">登入帳戶</button><br>
-            <p class="popupWord"><span id="failLogin"></span></p>
-            <p class="memberLink"><a id="logBtn" href="javascript:void(0)">還沒有帳戶？點此註冊</a></p>
-        </form>
+    <div id=memberBox_login class=memberBoxSection>
+        <div class="closeBtn"><a id="closeBtn1" href="javascript:void(0)"></a></div>
+        <div id=memberBox_bar></div>
+        <div class="memberBox">
+            <form action="/api/user" id=loginBox style="display: none" method="GET">
+                <p class="memberTitle">登入會員帳號</p>
+                <input type="text" id="logEmail" class="inputBox" name="logEmail" placeholder="輸入電子信箱"><br>
+                <input type="password" id="logPassword" class="inputBox" name="logPassword" placeholder="輸入密碼"><br>
+                <button class="memBtn" onclick= "loginProcess(event)">登入帳戶</button><br>
+                <p class="popupWord"><span id="failLogin"></span></p>
+                <p class="memberLink"><a id="logBtn" href="javascript:void(0)">還沒有帳戶？點此註冊</a></p>
+            </form>
+        </div>
     </div>
 
-    <div id ="memberBox_register" class="memberBox">
-        <form action="/api/user" id=registerBox style="display: none" method="POST">
-            <p class="memberTitle">註冊會員帳號</p>
-            <input type="text" id="regName" class="inputBox" name="regName" placeholder="輸入姓名"><br>
-            <input type="text" id="regEmail" class="inputBox" name="regEmail" placeholder="輸入電子郵件"><br>
-            <input type="password" id="regPassword" class="inputBox" name="regPassword" placeholder="輸入密碼"><br>
-            <button class="memBtn" onclick= "registerProcess()">註冊新帳戶</button><br>
-            <p class="popupWord"><span id="fail"></span></p>
-            <p class="memberLink"><a id="regBtn" href="javascript:void(0)">已經有帳戶了？點此登入</a></p>
-        </form>
+    <div id=memberBox_register class=memberBoxSection>
+        <div class="closeBtn"><a id="closeBtn2" href="javascript:void(0)"></a></div>
+        <div id=memberBox_bar></div>
+        <div class="memberBox">
+            <form action="/api/user" id=registerBox style="display: none" method="POST">
+                <p class="memberTitle">註冊會員帳號</p>
+                <input type="text" id="regName" class="inputBox" name="regName" placeholder="輸入姓名"><br>
+                <input type="text" id="regEmail" class="inputBox" name="regEmail" placeholder="輸入電子郵件" required><br>
+                <input type="password" id="regPassword" class="inputBox" name="regPassword" placeholder="輸入密碼"><br>
+                <button class="memBtn" onclick= "registerProcess()">註冊新帳戶</button><br>
+                <p class="popupWord"><span id="fail"></span></p>
+                <p class="memberLink"><a id="regBtn" href="javascript:void(0)">已經有帳戶了？點此登入</a></p>
+            </form>
+        </div>
     </div>
 
 

@@ -12,14 +12,18 @@ let next = document.getElementById("next");
 
 let width_p = 0;
 
+// if (localStorage["memberEmail"]) {
+//     document.getElementById("adminBtn").innerHTML = "登出"
+// }else {
+//     document.getElementById("adminBtn").innerHTML = "登入/註冊"
+// }
 
-
-window.onload = function () {
+// window.onload = function () {
+    checkStorage()
     showOneData(src_id);
     handleClick("1")
-    checkProcess()
     handleClick("早上 9 點到下午 4 點")
-}
+// }
 
 
 let attractionId;
@@ -209,17 +213,25 @@ let loginBox = document.getElementById("loginBox");
 let registerBox = document.getElementById("registerBox");
 let bg = document.getElementById("bg");
 // 點選並彈出登入視窗和遮蓋層
+let closeBtn1 = document.getElementById("closeBtn1");
+let closeBtn2 = document.getElementById("closeBtn2");
 let adminBtn = document.getElementById("adminBtn");
 let bgBtn = document.getElementById("bgBtn")
 let logBtn = document.getElementById("logBtn")
 let regBtn = document.getElementById("regBtn")
+// let logoutBtn = document.getElementById("logoutBtn")
 let tourBtn = document.getElementById("tourBtn")
 
 adminBtn.onclick = function() {
-    memberBox_login.style.display="block";
-    loginBox.style.display="block";
-    bg.style.display="block";
-    return false;
+    if (localStorage["memberEmail"]){
+        deleteProcess()
+        localStorage.removeItem("memberEmail");
+    } else {
+        memberBox_login.style.display="block";
+        loginBox.style.display="block";
+        bg.style.display="block";
+        return false;
+    }
 }
 
 bgBtn.onclick = function() {
@@ -228,6 +240,24 @@ bgBtn.onclick = function() {
     loginBox.style.display="none";
     registerBox.style.display="none";
     bg.style.display="none";
+    return false;
+}
+
+closeBtn1.onclick = function () {
+    memberBox_login.style.display = "none";
+    memberBox_register.style.display = "none";
+    loginBox.style.display = "none";
+    registerBox.style.display = "none";
+    bg.style.display = "none";
+    return false;
+}
+
+closeBtn2.onclick = function () {
+    memberBox_login.style.display = "none";
+    memberBox_register.style.display = "none";
+    loginBox.style.display = "none";
+    registerBox.style.display = "none";
+    bg.style.display = "none";
     return false;
 }
 
@@ -249,34 +279,36 @@ regBtn.onclick = function() {
     return false;
 }
 
-logoutBtn.onclick = ()=> {
-    deleteProcess()
-}
+// logoutBtn.onclick = ()=> {
+//     deleteProcess()
+// }
 
 tourBtn.onclick = () => {
-    if (document.getElementById("logoutBtn").style.display == "block"){
-        window.location = '/booking'
-    } else {
-        document.getElementById("memberBox_login").style.display="block"
-        document.getElementById("loginBox").style.display="block"
-        document.getElementById("bg").style.display="block"
-    }
+    checkProcess()
+
+    // if (localStorage["memberEmail"]) {
+    //     window.location = "/booking"
+    // } else {
+    //     document.getElementById("memberBox_login").style.display="block"
+    //     document.getElementById("loginBox").style.display="block"
+    //     document.getElementById("bg").style.display="block"
+    // }
 }
 
 
-document.getElementById("loginBox").onclick= (r) => {
+// document.getElementById("loginBox").onclick= (e) => {
+//     e.preventDefault()
+// }
+
+document.getElementById("registerBox").onclick= (r) => {
     r.preventDefault()
 }
 
-document.getElementById("registerBox").onclick= (e) => {
+
+
+async function loginProcess (e) {
+
     e.preventDefault()
-}
-
-
-
-
-
-async function loginProcess () {
 
     await fetch ("/api/user", {
         method:"PATCH",
@@ -296,9 +328,10 @@ async function loginProcess () {
             // console.log(data)
             if (data.error == true){
                 document.getElementById("failLogin").style.display = "block";
-                document.getElementById("failLogin").innerHTML = data.message
+                document.getElementById("failLogin").innerHTML = data.message;
             }else {
                 location.reload()
+                localStorage.setItem("memberEmail", "exit")
                 // window.location = '/'
                 // document.getElementById("failLogin").style.display = "none";
             }
@@ -309,6 +342,9 @@ async function loginProcess () {
             document.getElementById("failLogin").style.display = "block";             
             document.getElementById("failLogin").innerHTML="無此帳號";
           });
+
+        //   return false
+        
 }
 
 async function registerProcess() {
@@ -351,11 +387,15 @@ async function checkProcess() {
     .then (res => {
         // console.log(res)
         if (res.data == true){
-            document.getElementById("adminBtn").style.display = "none";
-            document.getElementById("logoutBtn").style.display = "block";
+            window.location = "/booking"
+            // document.getElementById("adminBtn").style.display = "none";
+            // document.getElementById("logoutBtn").style.display = "block";
         }else {
-            document.getElementById("adminBtn").style.display = "block";
-            document.getElementById("logoutBtn").style.display = "none";
+            document.getElementById("memberBox_login").style.display="block"
+            document.getElementById("loginBox").style.display="block"
+            document.getElementById("bg").style.display="block"
+            // document.getElementById("adminBtn").style.display = "block";
+            // document.getElementById("logoutBtn").style.display = "none";
         }
     })
 }
@@ -373,7 +413,7 @@ async function deleteProcess() {
     })
     .then (result => {
         if (result.ok == true){
-            window.location = '/'
+            location.reload()
             // document.getElementById("adminBtn").style.display = "block";
             // document.getElementById("logoutBtn").style.display = "none";
             
@@ -413,27 +453,38 @@ async function bookProcedure (){
         body: JSON.stringify(db)
     })
     .then (response => {
-        return response.json()
-    })
-    .then (data => {
-        if (data.error == false){
-            console.log(data.message)
+        // console.log(response.status)
+        if (response.status === 403){
             document.getElementById("memberBox_login").style.display = "block"
             document.getElementById("loginBox").style.display = "block"
             document.getElementById("bg").style.display = "block"
-        }else if (data.error == true){
+            return
+        }
+        return response.json()
+    })
+    .then (data => {
+        if (data.error == true){
             document.getElementById("notice").innerHTML = data.message
         }
         else {
-        window.location = '/booking'
+            localStorage.setItem("bookingData", "data")
+            window.location = '/booking'
         }
     })
 
     .catch(function(error) {    
-        console.log(error)           
+        // console.log(error)           
       });
 }
     
+
+function checkStorage() {
+    if (localStorage["memberEmail"]) {
+        document.getElementById("adminBtn").innerHTML = "登出"
+    }else {
+        document.getElementById("adminBtn").innerHTML = "登入/註冊"
+    }
+}
 
 
 

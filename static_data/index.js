@@ -3,17 +3,26 @@ let start_page = 0
 let isMouseAtBottom = false
 let content = document.getElementById('content');
 
+// if (localStorage["memberEmail"]) {
+//     document.getElementById("adminBtn").innerHTML = "登出"
+// } else {
+//     document.getElementById("adminBtn").innerHTML = "登入/註冊"
+// }
 
 
-window.onload = function () {
+// window.onload = function () {
+    checkStorage()
     search_page(start_page)
-    checkProcess()
-}
+// }
 
-let keyword;
+// function checkStorage() {
+
+// }
+
+
 
 async function search_page(item) {
-
+    let keyword;
     let data;
     let cur_page = 0
     isMouseAtBottom = true;
@@ -124,20 +133,46 @@ let loginBox = document.getElementById("loginBox");
 let registerBox = document.getElementById("registerBox");
 let bg = document.getElementById("bg");
 // 點選並彈出登入視窗和遮蓋層
+let closeBtn1 = document.getElementById("closeBtn1")
+let closeBtn2 = document.getElementById("closeBtn2")
 let adminBtn = document.getElementById("adminBtn");
 let bgBtn = document.getElementById("bgBtn")
 let logBtn = document.getElementById("logBtn")
 let regBtn = document.getElementById("regBtn")
+// let logoutBtn = document.getElementById("logoutBtn")
 let tourBtn = document.getElementById("tourBtn")
 
 adminBtn.onclick = function() {
-    memberBox_login.style.display="block";
-    loginBox.style.display="block";
-    bg.style.display="block";
-    return false;
+    if (localStorage["memberEmail"]){
+        deleteProcess()
+        localStorage.removeItem("memberEmail");
+    } else {
+        memberBox_login.style.display="block";
+        loginBox.style.display="block";
+        bg.style.display="block";
+        return false;
+    }
 }
 
 bgBtn.onclick = function() {
+    memberBox_login.style.display="none";
+    memberBox_register.style.display="none";
+    loginBox.style.display="none";
+    registerBox.style.display="none";
+    bg.style.display="none";
+    return false;
+}
+
+closeBtn1.onclick = function() {
+    memberBox_login.style.display="none";
+    memberBox_register.style.display="none";
+    loginBox.style.display="none";
+    registerBox.style.display="none";
+    bg.style.display="none";
+    return false;
+}
+
+closeBtn2.onclick = function() {
     memberBox_login.style.display="none";
     memberBox_register.style.display="none";
     loginBox.style.display="none";
@@ -164,13 +199,14 @@ regBtn.onclick = function() {
     return false;
 }
 
-logoutBtn.onclick = ()=> {
-    deleteProcess()
-}
+// logoutBtn.onclick = ()=> {
+//     deleteProcess()
+// }
 
-tourBtn.onclick = () => {
-    if (document.getElementById("logoutBtn").style.display == "block"){
-        window.location = '/booking'
+tourBtn.onclick = ()=> {
+    console.log("yes")
+    if (localStorage["memberEmail"]) {
+        window.location = "/booking"
     } else {
         document.getElementById("memberBox_login").style.display="block"
         document.getElementById("loginBox").style.display="block"
@@ -179,16 +215,26 @@ tourBtn.onclick = () => {
 }
 
 
-document.getElementById("loginBox").onclick= (r) => {
-    r.preventDefault()
-}
+// document.getElementById("loginBox").onclick= (r) => {
+//     r.preventDefault()
+// }
 
 document.getElementById("registerBox").onclick= (e) => {
     e.preventDefault()
 }
 
+function checkStorage() {
+    if (localStorage["memberEmail"]) {
+        document.getElementById("adminBtn").innerHTML = "登出"
+    } else {
+        document.getElementById("adminBtn").innerHTML = "登入/註冊"
+    }
+}
 
-async function loginProcess () {
+
+async function loginProcess (e) {
+
+    e.preventDefault()
 
     await fetch ("/api/user", {
         method:"PATCH",
@@ -211,6 +257,7 @@ async function loginProcess () {
                 document.getElementById("failLogin").innerHTML = data.message
             }else {
                 window.location = '/'
+                localStorage.setItem("memberEmail", "exist")
                 // document.getElementById("failLogin").style.display = "none";
             }
         })
@@ -220,6 +267,8 @@ async function loginProcess () {
             document.getElementById("failLogin").style.display = "block";             
             document.getElementById("failLogin").innerHTML="無此帳號";
           });
+
+        //   return false
 }
 
 async function registerProcess() {

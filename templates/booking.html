@@ -84,17 +84,46 @@
             color: #666666;
         }
 
-        .memberBox {
-            position: absolute;
+        .memberBoxSection {
+            position: fixed;
             left: 50%;
             top: 80px;
             transform: translateX(-50%);
-            background: #FFFFFF;
             box-shadow: 0px 4px 60px #AAAAAA;
-            padding: 10px;
-            border-radius: 6px;
             z-index: 999;
             display: none;
+        }
+
+        #memberBox_bar {
+            position: relative;
+            width: 340px;
+            height: 10px;
+            border-top-left-radius: 6px;
+            border-top-right-radius: 6px;
+            background: linear-gradient(270deg, #337788 0%, #66AABB 100%);
+        }
+
+        #closeBtn {
+            position: absolute;
+            top: 20px;
+            right: 10px;
+            width: 16px;
+            height: 16px;
+            background-image: url("/img/icon_close.png");
+            background-size: cover;
+            cursor: pointer;
+        }
+
+        #closeBtn a {
+            height: 16px;
+            display: block;
+        }
+
+        .memberBox {
+            background: #FFFFFF;
+            padding: 10px;
+            border-bottom-left-radius: 6px;
+            border-bottom-right-radius: 6px;
         }
 
         .memberTitle {
@@ -388,8 +417,8 @@
         <div class="first">
             <div class="header"><a href="/">台北一日遊</a></div>
             <div class="menu"><a id="tourBtn" href="javascript:void(0)">預定行程</a></div>
-            <div class="menu"><a id="adminBtn" href="javascript:void(0)">登入/註冊</a></div>
-            <div class="menu"><a id="logoutBtn" href="javascript:void(0)">登出</a></div>
+            <div class="menu"><a id="adminBtn" href="javascript:void(0)"></a></div>
+            <!-- <div class="menu"><a id="logoutBtn" href="javascript:void(0)">登出</a></div> -->
         </div>
     </nav>
     <hr class="hr1">
@@ -399,35 +428,43 @@
             <div id="bg" class="bg">sada</div>
         </a></label>
 
-    <div id="memberBox_login" class="memberBox">
+    <div id=memberBox_login class=memberBoxSection>
+        <div class="closeBtn"><a id="closeBtn1" href="javascript:void(0)"></a></div>
+        <div id=memberBox_bar></div>
+        <div class="memberBox">
 
-        <form action="/api/user" id=loginBox style="display: none" method="GET">
-            <p class="memberTitle">登入會員帳號</p>
-            <input type="text" id="logEmail" class="inputBox" name="logEmail" placeholder="輸入電子信箱"><br>
-            <input type="password" id="logPassword" class="inputBox" name="logPassword" placeholder="輸入密碼"><br>
-            <button class="memBtn" onclick="loginProcess()">登入帳戶</button><br>
-            <p class="popupWord"><span id="failLogin"></span></p>
-            <p class="memberLink"><a id="logBtn" href="javascript:void(0)">還沒有帳戶？點此註冊</a></p>
-        </form>
+            <form action="/api/user" id=loginBox style="display: none" method="GET">
+                <p class="memberTitle">登入會員帳號</p>
+                <input type="text" id="logEmail" class="inputBox" name="logEmail" placeholder="輸入電子信箱"><br>
+                <input type="password" id="logPassword" class="inputBox" name="logPassword" placeholder="輸入密碼"><br>
+                <button class="memBtn" onclick="loginProcess(event)">登入帳戶</button><br>
+                <p class="popupWord"><span id="failLogin"></span></p>
+                <p class="memberLink"><a id="logBtn" href="javascript:void(0)">還沒有帳戶？點此註冊</a></p>
+            </form>
+        </div>
     </div>
 
-    <div id="memberBox_register" class="memberBox">
-        <form action="/api/user" id=registerBox style="display: none" method="POST">
-            <p class="memberTitle">註冊會員帳號</p>
-            <input type="text" id="regName" class="inputBox" name="regName" placeholder="輸入姓名"><br>
-            <input type="text" id="regEmail" class="inputBox" name="regEmail" placeholder="輸入電子郵件"><br>
-            <input type="password" id="regPassword" class="inputBox" name="regPassword" placeholder="輸入密碼"><br>
-            <button class="memBtn" onclick="registerProcess()">註冊新帳戶</button><br>
-            <p class="popupWord"><span id="fail"></span></p>
-            <p class="memberLink"><a id="regBtn" href="javascript:void(0)">已經有帳戶了？點此登入</a></p>
-        </form>
+    <div id=memberBox_register class=memberBoxSection>
+        <div class="closeBtn"><a id="closeBtn2" href="javascript:void(0)"></a></div>
+        <div id=memberBox_bar></div>
+        <div class="memberBox">
+            <form action="/api/user" id=registerBox style="display: none" method="POST">
+                <p class="memberTitle">註冊會員帳號</p>
+                <input type="text" id="regName" class="inputBox" name="regName" placeholder="輸入姓名"><br>
+                <input type="text" id="regEmail" class="inputBox" name="regEmail" placeholder="輸入電子郵件" required><br>
+                <input type="password" id="regPassword" class="inputBox" name="regPassword" placeholder="輸入密碼"><br>
+                <button class="memBtn" onclick="registerProcess()">註冊新帳戶</button><br>
+                <p class="popupWord"><span id="fail"></span></p>
+                <p class="memberLink"><a id="regBtn" href="javascript:void(0)">已經有帳戶了？點此登入</a></p>
+            </form>
+        </div>
     </div>
 
     <div class=section>
         <div class="sectionHead">
             <p class="introduction">您好，{{session.memberName}}，待預訂的行程如下：</p>
         </div>
-        <div id="main">
+        <div id="main" style="display:none">
             <div class="sectionBox">
                 <div class="tourSection">
                     <div id="tourPic" class="tourPic"></div>
@@ -490,11 +527,15 @@
 
     <script>
 
-        window.onload = function () {
-            checkProcess()
-            bookingInfo()
-
+        // window.onload = function () {
+        // checkStorage()
+        checkDataStorage()
+        if (localStorage["memberEmail"]) {
+            document.getElementById("adminBtn").innerHTML = "登出"
+        } else {
+            document.getElementById("adminBtn").innerHTML = "登入/註冊"
         }
+        // }
 
         let memberBox_login = document.getElementById("memberBox_login");
         let memberBox_register = document.getElementById("memberBox_register");
@@ -502,21 +543,47 @@
         let registerBox = document.getElementById("registerBox");
         let bg = document.getElementById("bg");
         // 點選並彈出登入視窗和遮蓋層
+        let closeBtn1 = document.getElementById("closeBtn1")
+        let closeBtn2 = document.getElementById("closeBtn2")
         let adminBtn = document.getElementById("adminBtn");
         let bgBtn = document.getElementById("bgBtn")
         let logBtn = document.getElementById("logBtn")
         let regBtn = document.getElementById("regBtn")
         let tourBtn = document.getElementById("tourBtn")
+        // let logoutBtn = document.getElementById("logouBtn")
         let deleteBtn = document.getElementById("deleteBtn")
 
         adminBtn.onclick = function () {
-            memberBox_login.style.display = "block";
-            loginBox.style.display = "block";
-            bg.style.display = "block";
-            return false;
+            if (localStorage["memberEmail"]) {
+                deleteProcess()
+                localStorage.removeItem("memberEmail");
+            } else {
+                memberBox_login.style.display = "block";
+                loginBox.style.display = "block";
+                bg.style.display = "block";
+                return false;
+            }
         }
 
         bgBtn.onclick = function () {
+            memberBox_login.style.display = "none";
+            memberBox_register.style.display = "none";
+            loginBox.style.display = "none";
+            registerBox.style.display = "none";
+            bg.style.display = "none";
+            return false;
+        }
+
+        closeBtn1.onclick = function () {
+            memberBox_login.style.display = "none";
+            memberBox_register.style.display = "none";
+            loginBox.style.display = "none";
+            registerBox.style.display = "none";
+            bg.style.display = "none";
+            return false;
+        }
+
+        closeBtn2.onclick = function () {
             memberBox_login.style.display = "none";
             memberBox_register.style.display = "none";
             loginBox.style.display = "none";
@@ -543,13 +610,24 @@
             return false;
         }
 
-        logoutBtn.onclick = () => {
-            deleteProcess()
-        }
+        // logoutBtn.onclick = () => {
+        //     deleteProcess()
+        // }
 
         tourBtn.onclick = () => {
-            if (document.getElementById("logoutBtn").style.display == "block") {
-                window.location = '/booking'
+            if (localStorage["memberEmail"]) {
+                if (localStorage["bookingData"]) {
+                    console.log("success")
+                    window.location = "/booking"
+                    document.getElementById("main").style.display = "block"
+                }
+                else {
+                    document.getElementById("noDataSection").style.display = "block"
+                    document.getElementById("noData").innerHTML = "目前沒有任何待預訂的行程"
+                    document.getElementById("footer").style.position = "absolute"
+                    document.getElementById("footer").style.height = "100%"
+                }
+
             } else {
                 document.getElementById("memberBox_login").style.display = "block"
                 document.getElementById("loginBox").style.display = "block"
@@ -559,19 +637,48 @@
 
         deleteBtn.onclick = () => {
             bookingDelete()
+            localStorage.removeItem("bookingData");
+            document.getElementById("main").style.display = "none"
+            document.getElementById("noDataSection").style.display = "block"
+            document.getElementById("noData").innerHTML = "目前沒有任何待預訂的行程"
+            document.getElementById("footer").style.position = "absolute"
+            document.getElementById("footer").style.height = "100%"
+
         }
 
 
-        document.getElementById("loginBox").onclick = (r) => {
-            r.preventDefault()
-        }
+        // document.getElementById("loginBox").onclick = (r) => {
+        //     r.preventDefault()
+        // }
 
         document.getElementById("registerBox").onclick = (e) => {
             e.preventDefault()
         }
 
+        function checkStorage() {
+            if (localStorage["memberEmail"]) {
+                document.getElementById("adminBtn").innerHTML = "登出"
+            } else {
+                document.getElementById("adminBtn").innerHTML = "登入/註冊"
+            }
+        }
 
-        async function loginProcess() {
+        function checkDataStorage() {
+            if (!localStorage["bookingData"]) {
+                document.getElementById("noDataSection").style.display = "block"
+                document.getElementById("noData").innerHTML = "目前沒有任何待預訂的行程"
+                document.getElementById("footer").style.position = "absolute"
+                document.getElementById("footer").style.height = "100%"
+            } else {
+                bookingInfo()
+            }
+        }
+
+
+
+        async function loginProcess(e) {
+
+            e.preventDefault()
 
             await fetch("/api/user", {
                 method: "PATCH",
@@ -648,9 +755,9 @@
                         document.getElementById("adminBtn").style.display = "none";
                         document.getElementById("logoutBtn").style.display = "block";
                     } else {
-                        window.location = "/"
-                        // document.getElementById("adminBtn").style.display = "block";
-                        // document.getElementById("logoutBtn").style.display = "none";
+                        // window.location = "/"
+                        document.getElementById("adminBtn").style.display = "block";
+                        document.getElementById("logoutBtn").style.display = "none";
                     }
                 })
         }
@@ -677,6 +784,10 @@
         }
 
         async function bookingInfo() {
+
+            if (!localStorage["bookingData"]) {
+                return
+            }
             await fetch("/api/booking", { method: "GET" })
 
                 .then(response => {
@@ -691,6 +802,7 @@
                         document.getElementById("footer").style.position = "absolute"
                         document.getElementById("footer").style.height = "100%"
                     } else {
+                        document.getElementById("main").style.display = "block"
                         document.getElementById("name").innerHTML = res.data.attraction.name
                         document.getElementById("date").innerHTML = res.data.date
                         document.getElementById("time").innerHTML = res.data.time
@@ -710,7 +822,8 @@
                 })
                 .then(data => {
                     if (data.ok == true) {
-                        location.reload()
+                        console.log(data)
+                        // location.reload()
                     }
                 })
         }

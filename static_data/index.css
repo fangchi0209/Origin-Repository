@@ -57,17 +57,46 @@ nav {
     color: #666666;
 }
 
-.memberBox {
+.memberBoxSection {
     position: fixed;
     left: 50%;
     top: 80px;
     transform: translateX(-50%);
-    background: #FFFFFF;
     box-shadow: 0px 4px 60px #AAAAAA;
-    padding: 10px;
-    border-radius: 6px;
     z-index: 999;
     display: none;
+}
+
+#memberBox_bar {
+    position: relative;
+    width: 340px;
+    height: 10px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    background: linear-gradient(270deg, #337788 0%, #66AABB 100%);
+    }
+
+.closeBtn {
+    position: absolute;
+    top: 20px;
+    right: 10px;
+    width: 16px;
+    height: 16px;
+    background-image: url("/img/icon_close.png");
+    background-size: cover;
+    cursor: pointer;
+}
+
+.closeBtn a {
+    height: 16px;
+    display: block;
+}
+
+.memberBox {
+    background: #FFFFFF;
+    padding: 10px;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
 }
 
 .memberTitle {
@@ -90,7 +119,6 @@ nav {
     border-radius: 5px;
     font-family: Noto Sans TC;
     font-size: 16px;
-
     color: #666666;
 
 }
@@ -283,6 +311,8 @@ nav {
     height: 160px;
     background-repeat: no-repeat;
     background-size: cover;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
     left: 0px;
     top: 0px;
 

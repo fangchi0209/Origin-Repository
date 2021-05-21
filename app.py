@@ -36,7 +36,10 @@ def attraction(id):
 	return render_template("attraction.html")
 @app.route("/booking")
 def booking():
-	return render_template("booking.html")
+	if "memberEmail" in session:
+		return render_template("booking.html")
+	else:
+		return redirect("/")
 @app.route("/thankyou")
 def thankyou():
 	return render_template("thankyou.html")
@@ -299,7 +302,7 @@ def bookingPage():
 
 		else:
 			return jsonify({
-				"error": False,
+				"error": True,
 				"message": "請先登入"
 			}),403
 
