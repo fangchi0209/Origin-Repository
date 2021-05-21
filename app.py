@@ -115,7 +115,7 @@ def findId(attractionId):
 	try:
 		mycursor.execute("SELECT * FROM information WHERE id = '%s'" % (attractionId))
 		searchId = mycursor.fetchone()
-		print(type(searchId))
+		# print(type(searchId))
 		if searchId != None:
 			return json.dumps({"data":{
 			"id": searchId[0],
@@ -151,16 +151,15 @@ def loginPage():
 
 	if request.method == "PATCH":
 		data = request.get_json()
-		sqlEmail = data['email']
+		sqlEmail = data.get('email')
 		sqlPassword = data ['password']
 		mycursor.execute ("SELECT * FROM member WHERE email = '%s'" % (sqlEmail))
 		loginResult = mycursor.fetchone()
-		print (loginResult)
 		try:
 			if loginResult != None:
 				if sqlPassword == loginResult[3]:
 					session["memberEmail"] = loginResult[2]
-					# return redirect("/")
+					session["memberName"] = loginResult[1]
 					return jsonify ({
 						"data": {
 							"id": loginResult[0],
@@ -228,10 +227,87 @@ def loginPage():
 
 	elif request.method == "DELETE":
 		session.pop("memberEmail", None)
+		session.pop("date", None)
 		return jsonify({
 			"ok": True,
 		})
-		# return redirect("/")
+
+@app.route("/api/booking", methods=["GET", "POST", "DELETE"])
+def bookingPage():
+
+	try:
+		if "memberEmail" in session:
+
+			if request.method == "POST":
+
+				result = request.get_json()
+				print(result)
+				attractionId = result["attractionId"]
+				session["id"] = attractionId
+				date = result["date"]
+				session ["date"] = date
+				time = result["time2"]
+				session ["time"] = time
+				price = result["price"]
+				session ["price"] = price
+
+				if result["date"]:
+					return jsonify({
+					"ok": True,
+				}),200
+				else:
+					return jsonify({
+						"error": True,
+						"message": "請選取日期"
+					}),400
+
+			if request.method == "GET":
+				if "date" in session:
+					sqlId = session["id"]
+					mycursor.execute("SELECT * FROM information WHERE id = '%s'" % (sqlId))
+					bookingResult=mycursor.fetchone()
+					# print(bookingResult)
+					return jsonify({
+						"data": {
+							"attraction": {
+							"id": bookingResult[0],
+							"name": bookingResult[1],
+							"address": bookingResult[4],
+							"image": bookingResult[9].split(",")[0]
+							},
+							"date": session["date"],
+							"time": session["time"],
+							"price": session["price"]
+						}
+					}),200
+				else:
+					return jsonify({
+						"error": True,
+						"message": "目前沒有任何待預訂的行程"
+
+					})
+
+			if request.method == "DELETE":
+				session.pop("date", None)
+				return jsonify({
+					"ok": True
+				}),200
+			else:
+				return jsonify({
+					"error": True
+				})
+
+		else:
+			return jsonify({
+				"error": False,
+				"message": "請先登入"
+			}),403
+
+	except:
+		return jsonify({
+			"error": True,
+			"message": "伺服器內部錯誤"
+			}),500
 
 
 

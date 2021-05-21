@@ -51,7 +51,8 @@ nav {
     margin: 10px 10px;
 }
 
-#adminBtn, #logoutBtn {
+
+#tourBtn, #adminBtn, #logoutBtn, #logBtn, #regBtn {
     text-decoration: none;
     color: #666666;
 }
@@ -362,7 +363,45 @@ nav {
 
 }
 
-@media (max-width:800px) {
+@media (max-width:1199px) {
+
+    .content {
+        width: 90%;
+    }
+
+    .box {
+        width: 300px;
+    }
+
+    .welcome_pic{
+        width: 60%;
+        bottom: 0;
+    }
+
+    .attractions_img {
+        width: 100%;
+    }
+
+
+    .slogan{
+        width: 50%;
+    }
+
+    .search {
+        width: 100%;
+    }
+
+    #btn {
+        width: 15%;
+    }
+
+    .searchBox {
+        width: 80%;
+    }
+
+}
+
+@media (max-width:600px) {
     .content {
         width: 370px;
     }
