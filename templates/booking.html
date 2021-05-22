@@ -60,9 +60,8 @@
         .menu {
             font-family: Noto Sans TC;
             font-size: 16px;
-            margin: 10px;
             color: #666666;
-            margin: 10px 10px;
+            margin: 10px 5px;
         }
 
         .hr1 {
@@ -416,9 +415,9 @@
     <nav>
         <div class="first">
             <div class="header"><a href="/">台北一日遊</a></div>
-            <div class="menu"><a id="tourBtn" href="javascript:void(0)">預定行程</a></div>
-            <div class="menu"><a id="adminBtn" href="javascript:void(0)"></a></div>
-            <!-- <div class="menu"><a id="logoutBtn" href="javascript:void(0)">登出</a></div> -->
+            <div class="menu"><a id="tourBtn" href="javascript:void(0)" style="display:none">預定行程</a></div>
+            <div class="menu"><a id="adminBtn" href="javascript:void(0)" style="display:none">登入/註冊</a></div>
+            <div class="menu"><a id="logoutBtn" href="javascript:void(0)" style="display:none">登出</a></div>
         </div>
     </nav>
     <hr class="hr1">
@@ -527,15 +526,8 @@
 
     <script>
 
-        // window.onload = function () {
-        // checkStorage()
-        checkDataStorage()
-        if (localStorage["memberEmail"]) {
-            document.getElementById("adminBtn").innerHTML = "登出"
-        } else {
-            document.getElementById("adminBtn").innerHTML = "登入/註冊"
-        }
-        // }
+        checkProcess()
+        bookingInfo()
 
         let memberBox_login = document.getElementById("memberBox_login");
         let memberBox_register = document.getElementById("memberBox_register");
@@ -554,15 +546,10 @@
         let deleteBtn = document.getElementById("deleteBtn")
 
         adminBtn.onclick = function () {
-            if (localStorage["memberEmail"]) {
-                deleteProcess()
-                localStorage.removeItem("memberEmail");
-            } else {
-                memberBox_login.style.display = "block";
-                loginBox.style.display = "block";
-                bg.style.display = "block";
-                return false;
-            }
+            memberBox_login.style.display = "block";
+            loginBox.style.display = "block";
+            bg.style.display = "block";
+            return false;
         }
 
         bgBtn.onclick = function () {
@@ -610,24 +597,13 @@
             return false;
         }
 
-        // logoutBtn.onclick = () => {
-        //     deleteProcess()
-        // }
+        logoutBtn.onclick = () => {
+            deleteProcess()
+        }
 
         tourBtn.onclick = () => {
-            if (localStorage["memberEmail"]) {
-                if (localStorage["bookingData"]) {
-                    console.log("success")
-                    window.location = "/booking"
-                    document.getElementById("main").style.display = "block"
-                }
-                else {
-                    document.getElementById("noDataSection").style.display = "block"
-                    document.getElementById("noData").innerHTML = "目前沒有任何待預訂的行程"
-                    document.getElementById("footer").style.position = "absolute"
-                    document.getElementById("footer").style.height = "100%"
-                }
-
+            if (document.getElementById("logoutButn").style.display == "block") {
+                window.location = "/booking"
             } else {
                 document.getElementById("memberBox_login").style.display = "block"
                 document.getElementById("loginBox").style.display = "block"
@@ -637,12 +613,6 @@
 
         deleteBtn.onclick = () => {
             bookingDelete()
-            localStorage.removeItem("bookingData");
-            document.getElementById("main").style.display = "none"
-            document.getElementById("noDataSection").style.display = "block"
-            document.getElementById("noData").innerHTML = "目前沒有任何待預訂的行程"
-            document.getElementById("footer").style.position = "absolute"
-            document.getElementById("footer").style.height = "100%"
 
         }
 
@@ -654,26 +624,6 @@
         document.getElementById("registerBox").onclick = (e) => {
             e.preventDefault()
         }
-
-        function checkStorage() {
-            if (localStorage["memberEmail"]) {
-                document.getElementById("adminBtn").innerHTML = "登出"
-            } else {
-                document.getElementById("adminBtn").innerHTML = "登入/註冊"
-            }
-        }
-
-        function checkDataStorage() {
-            if (!localStorage["bookingData"]) {
-                document.getElementById("noDataSection").style.display = "block"
-                document.getElementById("noData").innerHTML = "目前沒有任何待預訂的行程"
-                document.getElementById("footer").style.position = "absolute"
-                document.getElementById("footer").style.height = "100%"
-            } else {
-                bookingInfo()
-            }
-        }
-
 
 
         async function loginProcess(e) {
@@ -750,7 +700,7 @@
                     return response.json()
                 })
                 .then(res => {
-                    // console.log(res)
+                    document.getElementById("tourBtn").style.display = "block";
                     if (res.data == true) {
                         document.getElementById("adminBtn").style.display = "none";
                         document.getElementById("logoutBtn").style.display = "block";
@@ -785,9 +735,6 @@
 
         async function bookingInfo() {
 
-            if (!localStorage["bookingData"]) {
-                return
-            }
             await fetch("/api/booking", { method: "GET" })
 
                 .then(response => {
@@ -803,6 +750,7 @@
                         document.getElementById("footer").style.height = "100%"
                     } else {
                         document.getElementById("main").style.display = "block"
+                        document.getElementById("noDataSection").style.display = "none"
                         document.getElementById("name").innerHTML = res.data.attraction.name
                         document.getElementById("date").innerHTML = res.data.date
                         document.getElementById("time").innerHTML = res.data.time
@@ -822,8 +770,11 @@
                 })
                 .then(data => {
                     if (data.ok == true) {
-                        console.log(data)
-                        // location.reload()
+                        document.getElementById("main").style.display = "none"
+                        document.getElementById("noDataSection").style.display = "block"
+                        document.getElementById("noData").innerHTML = "目前沒有任何待預訂的行程"
+                        document.getElementById("footer").style.position = "absolute"
+                        document.getElementById("footer").style.height = "100%"
                     }
                 })
         }

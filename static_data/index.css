@@ -45,10 +45,9 @@ nav {
     /* Body - Reg 16(13.3) */
     font-family: Noto Sans TC;
     font-size: 16px;
-    margin: 10px;
     color: #666666;
     flex: none;
-    margin: 10px 10px;
+    margin: 10px 5px;
 }
 
 
