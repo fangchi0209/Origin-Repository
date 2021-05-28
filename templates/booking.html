@@ -181,7 +181,7 @@
             font-size: 16px;
             color: red;
             text-align: center;
-            margin: 0px;
+            margin: 0px auto;
         }
 
         .section {
@@ -214,7 +214,7 @@
 
         .sectionBox_fee {
             width: 900px;
-            margin: 30px auto;
+            margin: 0px auto 30px auto;
             display: flex;
             flex-direction: column;
             align-items: flex-end;
@@ -297,6 +297,10 @@
             border: 1px solid #E8E8E8;
             box-sizing: border-box;
             border-radius: 5px;
+        }
+
+        .sidebyside {
+            display: flex;
         }
 
         .ps {
@@ -483,30 +487,40 @@
                 </div>
             </div>
             <hr class="hr2">
+            <form>
             <div class=sectionBox>
                 <p class="introduction">您的聯絡資訊</p>
+
                 <div class="inputTitle">
-                    聯絡姓名：<input type="text" class="inputBox"><br>
-                    連絡信箱：<input type="text" class="inputBox"><br>
-                    手機號碼：<input type="tel" class="inputBox"><br>
+                    聯絡姓名：<input type="text" id="contactName" class="inputBox" name="contactName"><br>
+                    連絡信箱：<input type="text" id="contactEmail" class="inputBox" name="contactEmail"><br>
+                    手機號碼：<input type="tel" id="contactNo" class="inputBox" name="contactNo"><br>
                 </div>
                 <p class="ps">請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</p>
             </div>
             <hr class="hr2">
             <div class=sectionBox>
                 <p class="introduction">信用卡付款資訊</p>
-                <div class="inputTitle">
-                    卡片號碼：<input type="text" class="inputBox" placeholder="**** **** **** ****"><br>
-                    過期時間：<input type="text" class="inputBox" placeholder="MM/YY"><br>
-                    驗證密碼：<input type="text" class="inputBox" placeholder="CVW"><br>
-                    <p id="output"></p>
-                </div>
+                
+                    <div class="inputTitle">
+                        <div class = "sidebyside">
+                            <div>卡片號碼：</div><div class="inputBox" id="card-number"></div>
+                        </div>
+                        <div class = "sidebyside">
+                            <div>過期時間：</div><div class="inputBox" id="card-expiration-date"></div>
+                        </div>
+                        <div class = "sidebyside">
+                            <div>驗證密碼：</div><div class="inputBox" id="card-ccv"></div>
+                        </div>
+                    </div>
             </div>
             <hr class="hr2">
+            <p class="popupWord"><span id="notComplete"></span></p>
             <div class="sectionBox_fee">
                 <p class="ps">總價：<span id="ps"></span></p>
-                <button class="confirmBtn">確認訂購並付款</button>
-            </div>
+                <button type="submit" id="btnn" class="confirmBtn" onclick="onSubmit(event)">確認訂購並付款</button>
+            </div>            
+            </form>
         </div>
         <div id=noDataSection class="sectionBox" style="display: none">
             <div id="noData"></div>
@@ -519,15 +533,13 @@
     </div>
 
 
-
-
-
-
-
     <script>
 
         checkProcess()
         bookingInfo()
+
+        
+
 
         let memberBox_login = document.getElementById("memberBox_login");
         let memberBox_register = document.getElementById("memberBox_register");
@@ -542,7 +554,7 @@
         let logBtn = document.getElementById("logBtn")
         let regBtn = document.getElementById("regBtn")
         let tourBtn = document.getElementById("tourBtn")
-        // let logoutBtn = document.getElementById("logouBtn")
+        let logoutBtn = document.getElementById("logoutBtn")
         let deleteBtn = document.getElementById("deleteBtn")
 
         adminBtn.onclick = function () {
@@ -602,7 +614,7 @@
         }
 
         tourBtn.onclick = () => {
-            if (document.getElementById("logoutButn").style.display == "block") {
+            if (document.getElementById("logoutBtn").style.display == "block") {
                 window.location = "/booking"
             } else {
                 document.getElementById("memberBox_login").style.display = "block"
@@ -705,9 +717,9 @@
                         document.getElementById("adminBtn").style.display = "none";
                         document.getElementById("logoutBtn").style.display = "block";
                     } else {
-                        // window.location = "/"
-                        document.getElementById("adminBtn").style.display = "block";
-                        document.getElementById("logoutBtn").style.display = "none";
+                        window.location = "/"
+                        // document.getElementById("adminBtn").style.display = "block";
+                        // document.getElementById("logoutBtn").style.display = "none";
                     }
                 })
         }
@@ -733,6 +745,9 @@
                 })
         }
 
+        
+        let url_id;
+        
         async function bookingInfo() {
 
             await fetch("/api/booking", { method: "GET" })
@@ -758,6 +773,7 @@
                         document.getElementById("place").innerHTML = res.data.attraction.address
                         document.getElementById("tourPic").style.backgroundImage = "url('" + res.data.attraction.image + "')"
                         document.getElementById("ps").innerHTML = res.data.price
+                        url_id = res.data.attraction.id
                     }
                 })
         }
@@ -779,6 +795,128 @@
                 })
         }
 
+
+    </script>
+    <script src="https://js.tappaysdk.com/tpdirect/v5.7.0"></script>
+    <script>
+        TPDirect.setupSDK(20419, 'app_C453RMj4nEQ60S0kuDnJtBTiWA8hjFRSeaFipx38uxvRKZtWitq0Nlt7qt5c', 'sandbox')
+
+        var fields = {
+            number: {
+                // css selector
+                element: '#card-number',
+                placeholder: '**** **** **** ****'
+            },
+            expirationDate: {
+                // DOM object
+                element: document.getElementById('card-expiration-date'),
+                placeholder: 'MM / YY'
+            },
+            ccv: {
+                element: '#card-ccv',
+                placeholder: '後三碼'
+            }
+        }
+
+        TPDirect.card.setup({
+            fields: fields,
+            styles: {
+                // style valid state
+                '.valid': {
+                    'color': 'green'
+                },
+                // style invalid state
+                '.invalid': {
+                    'color': 'red'
+                },
+                // Media queries
+                // Note that these apply to the iframe, not the root window.
+                '@media screen and (max-width: 400px)': {
+                    'input': {
+                        'color': 'orange'
+                    }
+                }
+            }
+        })
+
+        TPDirect.card.onUpdate(function (update) {
+            // update.canGetPrime === true
+            // --> you can call TPDirect.card.getPrime()
+            submitButton = document.getElementById("btnn")
+            if (update.canGetPrime) {
+                // Enable submit Button to get prime.
+                submitButton.removeAttribute('disabled')
+            } else {
+                // Disable submit Button to get prime.
+                submitButton.setAttribute('disabled', true)
+            }
+        })
+
+        function onSubmit(event) {
+            event.preventDefault()
+            let name = document.getElementById("contactName").value
+            let email = document.getElementById("contactEmail").value
+            let phone =  document.getElementById("contactNo").value
+
+            console.log("click")
+
+            if (name === "" || email === "" || phone === ""){
+                document.getElementById("notComplete").innerHTML = "請輸入聯絡資訊"
+                console.log("contact")
+                return
+                
+            }
+                // document.getElementById("notComplete").innerHTML = "DEMO"
+                console.log("card")
+
+                // Get prime
+                TPDirect.card.getPrime((result) => {
+                    console.log(result)
+                    if (result.status !== 0) {
+                        document.getElementById("notComplete").innerHTML = "請確認付款資訊是否正確"
+                    }else{
+                    // alert('get prime 成功，prime: ' + result.card.prime)
+
+                        fetch("/api/orders", {
+                            method: "POST",
+                            headers: {
+                                "content-type": "application/json",
+                            },
+                            body: JSON.stringify({
+                                "prime": result.card.prime,
+                                "order": {
+                                    "price": document.getElementById("fee").innerHTML,
+                                    "trip": {
+                                        "attraction": {
+                                            "id": url_id,
+                                            "name": document.getElementById("name").innerHTML,
+                                            "address": document.getElementById("place").innerHTML,
+                                            "image": document.getElementById("tourPic").innerHTML,
+                                        },
+                                        "date": document.getElementById("date").innerHTML,
+                                        "time": document.getElementById("time").innerHTML,
+                                    },
+                                    "contact": {
+                                        "name": document.getElementById("contactName").value,
+                                        "email": document.getElementById("contactEmail").value,
+                                        "phone": document.getElementById("contactNo").value,
+                                    }
+                                }
+                            })
+                        })
+                        .then(response => {
+                            return response.json()
+                        })
+                        .then(res => {
+                            console.log(res)
+                            transactionId = res.data.number
+                            url_thankyou = "/thankyou?number=" + transactionId
+                            window.location = url_thankyou
+                        })
+                    }
+                })
+            
+        }
 
     </script>
 
