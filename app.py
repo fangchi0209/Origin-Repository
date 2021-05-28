@@ -13,8 +13,8 @@ from flask import Flask, jsonify, render_template, request, abort, session, redi
 
 mydb = mysql.connector.connect(
     host="127.0.0.1",
-    user="debian-sys-maint",
-    password="exgi5qGqkOVES8BL",
+    user="root",
+    password="mydog8229",
     database="attractions"
 )
 
@@ -50,7 +50,7 @@ def booking():
 @app.route("/thankyou")
 def thankyou():
     if "memberEmail" in session:
-    	return render_template("thankyou.html")
+        return render_template("thankyou.html")
     else:
         return redirect("/")
 
@@ -427,40 +427,44 @@ def orderNumber(orderNumber):
     x = requests.post("https://sandbox.tappaysdk.com/tpc/transaction/query",
                       data=json.dumps(body), headers=header)
     res = json.loads(x.text)
+    # print(res)
 
     transactionList = res["trade_records"]
     theOne = next(
         item for item in transactionList if item["bank_transaction_id"] == orderNumber)
-    print(theOne)
+    # print(theOne)
 
     orderId = json.loads(theOne["details"])["id"]
     mycursor.execute("SELECT * FROM information WHERE id = '%s'" % (orderId))
     orderResult = mycursor.fetchone()
-    print(orderResult)
+    # print(orderResult)
 
-    # return jsonify({
-    #     "ok": "ok"
-    # })
-
-    return jsonify({
-        "data": {
-            "price": theOne["amount"],
-            "trip": {
-                "id": json.loads(theOne["details"])["id"],
-                "name": orderResult[1],
-                "address": orderResult[4],
-                "image": orderResult[9].split(",")[0]
+    if "memberEmail" in session:
+        return jsonify({
+            "data": {
+                "price": theOne["amount"],
+                "trip": {
+                    "id": json.loads(theOne["details"])["id"],
+                    "name": orderResult[1],
+                    "address": orderResult[4],
+                    "image": orderResult[9].split(",")[0]
+                },
+                "date": json.loads(theOne["details"])["date"],
+                "time": json.loads(theOne["details"])["time"]
             },
-            "date": json.loads(theOne["details"])["date"],
-            "time": json.loads(theOne["details"])["time"]
-        },
-        "contact": {
-            "name": theOne["cardholder"]["name"],
-            "email": theOne["cardholder"]["email"],
-            "phone": theOne["cardholder"]["phone_number"]
-        },
-        "status": res["status"]
-    })
+            "contact": {
+                "name": theOne["cardholder"]["name"],
+                "email": theOne["cardholder"]["email"],
+                "phone": theOne["cardholder"]["phone_number"]
+            },
+            "status": theOne["record_status"]
+        }),200
+
+    else:
+        return jsonify({
+            "error": True,
+            "message": "未登入系統，拒絕存取"
+        }),403
 
 
 app.run(host="0.0.0.0", port=3000, debug=True)
