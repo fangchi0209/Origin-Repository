@@ -8,8 +8,6 @@
 
     <link rel="stylesheet" type="text/css" href="/index.css" />
     
-
-
 </head>
 
 <body>
@@ -18,8 +16,7 @@
             <div class="header"><a href="/">台北一日遊</a></div>
             <div class="menu"><a id="tourBtn" href="javascript:void(0)" style="display:none">預定行程</a></div>
             <div class="menu"><a id="adminBtn" href="javascript:void(0)" style="display:none">登入/註冊</a></div>            
-            <div class="menu"><a id="logoutBtn" href="javascript:void(0)" style="display:none">登出</a></div>
-            
+            <div class="menu"><a id="logoutBtn" href="javascript:void(0)" style="display:none">登出</a></div>            
         </div>
     </nav>
 
@@ -68,23 +65,28 @@
 
             <div class="search">
                 <input type="text" id= "searchKeyword" class="searchBox" name="keyword" placeholder="輸入景點名稱查詢">
-                <button id="btn">
+                <button id="searchBtn">
                     <div class="search_icon"></div>
-                </button>
-                    
+                </button>                    
             </div>
         </div>
-
     </div>
-
     
 
-    <div class="content" id="content"></div>
+    
+    <div id="wrap">
+        <div id="wrapSection">
+            <div class="content" id="content"></div>
+        </div>
+
+        <div id="footer">
+            COPYRIGHT © 2021 台北一日遊
+        </div>
 
 
-    <div class="footer">
-        COPYRIGHT © 2021 台北一日遊
     </div>
+
+
 
 
 

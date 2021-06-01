@@ -16,14 +16,11 @@
     <style>
         @import url(//fonts.googleapis.com/earlyaccess/notosanstc.css);
 
-        body {
-            margin: 0;
-            height: 100%;
-        }
-
         html,
         body {
             overflow-x: hidden;
+            margin: 0;
+            height: 100%
         }
 
         nav {
@@ -34,6 +31,7 @@
             display: flex;
             align-items: center;
             z-index: 10;
+            border-bottom: 1px solid #E8E8E8;
         }
 
         .first {
@@ -62,16 +60,6 @@
             font-size: 16px;
             color: #666666;
             margin: 10px 5px;
-        }
-
-        .hr1 {
-            width: 100%;
-            height: 54px;
-            left: 0px;
-            border: 1px solid #E8E8E8;
-            /* position: fixed;
-            background: white; */
-
         }
 
         #tourBtn,
@@ -169,12 +157,6 @@
             margin: 5px;
         }
 
-        #logBtn,
-        #regBtn {
-            text-decoration: none;
-            color: #666666;
-        }
-
         .popupWord {
             width: 310px;
             font-family: Noto Sans TC;
@@ -184,8 +166,17 @@
             margin: 0px auto;
         }
 
-        .section {
-            display: flex
+        #wrapSection {
+            display: flex;
+            flex-direction: column;
+            margin: 10px auto;
+        }
+
+        #wrap {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            margin-top: 54px;
         }
 
         .hr2 {
@@ -209,12 +200,12 @@
 
         .sectionBox {
             width: 900px;
-            margin: 30px auto;
+            margin: 30px 0px;
         }
 
         .sectionBox_fee {
             width: 900px;
-            margin: 0px auto 30px auto;
+            margin-bottom: 30px;
             display: flex;
             flex-direction: column;
             align-items: flex-end;
@@ -328,16 +319,18 @@
         }
 
         #footer {
+            display: flex;
             width: 100%;
-            height: 50px;
             margin-top: 20px;
-            padding: 20px 0px 10px 0px;
-            text-align: center;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            justify-content: center;
             background: #757575;
             color: white;
             font-family: Noto Sans TC;
             font-weight: bold;
             font-size: 16px;
+            flex-grow: 1;
         }
 
         .bg {
@@ -355,7 +348,7 @@
 
         @media (max-width:1199px) {
 
-            .section {
+            #wrapSection {
                 width: 80%;
             }
 
@@ -378,7 +371,7 @@
         }
 
         @media (max-width:720px) {
-            .section {
+            #wrapSection {
                 width: 90%;
             }
 
@@ -416,6 +409,7 @@
 
         }
     </style>
+
     <nav>
         <div class="first">
             <div class="header"><a href="/">台北一日遊</a></div>
@@ -424,7 +418,6 @@
             <div class="menu"><a id="logoutBtn" href="javascript:void(0)" style="display:none">登出</a></div>
         </div>
     </nav>
-    <hr class="hr1">
 
     <!-- 遮蓋層 -->
     <label><a id="bgBtn" href="javascript:void(0)">
@@ -434,8 +427,8 @@
     <div id=memberBox_login class=memberBoxSection>
         <div class="closeBtn"><a id="closeBtn1" href="javascript:void(0)"></a></div>
         <div id=memberBox_bar></div>
-        <div class="memberBox">
 
+        <div class="memberBox">
             <form action="/api/user" id=loginBox style="display: none" method="GET">
                 <p class="memberTitle">登入會員帳號</p>
                 <input type="text" id="logEmail" class="inputBox" name="logEmail" placeholder="輸入電子信箱"><br>
@@ -463,74 +456,86 @@
         </div>
     </div>
 
-    <div class=section>
-        <div class="sectionHead">
-            <p class="introduction">您好，{{session.memberName}}，待預訂的行程如下：</p>
-        </div>
-        <div id="main" style="display:none">
-            <div class="sectionBox">
-                <div class="tourSection">
-                    <div id="tourPic" class="tourPic"></div>
-                    <div class="tourInfo">
-                        <div class="tourInfoTitle1">台北一日遊：<div id="name"></div>
-                        </div>
-                        <div class="tourInfoTitle">日期：<div id="date" class="prevData"></div>
-                        </div>
-                        <div class="tourInfoTitle">時間：<div id="time" class="prevData"></div>
-                        </div>
-                        <div class="tourInfoTitle">費用：<div id="fee" class="prevData"></div>
-                        </div>
-                        <div class="tourInfoTitle">地點：<div id="place" class="prevData"></div>
-                        </div>
-                    </div>
-                    <div class="binIcon"><a id="deleteBtn" href="javascript:void(0)"></a></div>
-                </div>
+    <div id="wrap">
+        <div id=wrapSection>
+            <div class="sectionHead">
+                <p class="introduction">您好，{{session.memberName}}，待預訂的行程如下：</p>
             </div>
-            <hr class="hr2">
-            <form>
-            <div class=sectionBox>
-                <p class="introduction">您的聯絡資訊</p>
 
-                <div class="inputTitle">
-                    聯絡姓名：<input type="text" id="contactName" class="inputBox" name="contactName"><br>
-                    連絡信箱：<input type="text" id="contactEmail" class="inputBox" name="contactEmail"><br>
-                    手機號碼：<input type="tel" id="contactNo" class="inputBox" name="contactNo"><br>
+            <div id="main" style="display:none">
+                <div class="sectionBox">
+                    <div class="tourSection">
+                        <div id="tourPic" class="tourPic"></div>
+                        <div class="tourInfo">
+                            <div class="tourInfoTitle1">台北一日遊：<div id="name"></div>
+                            </div>
+                            <div class="tourInfoTitle">日期：<div id="date" class="prevData"></div>
+                            </div>
+                            <div class="tourInfoTitle">時間：<div id="time" class="prevData"></div>
+                            </div>
+                            <div class="tourInfoTitle">費用：<div id="fee" class="prevData"></div>
+                            </div>
+                            <div class="tourInfoTitle">地點：<div id="place" class="prevData"></div>
+                            </div>
+                        </div>
+                        <div class="binIcon"><a id="deleteBtn" href="javascript:void(0)"></a></div>
+                    </div>
                 </div>
-                <p class="ps">請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</p>
-            </div>
-            <hr class="hr2">
-            <div class=sectionBox>
-                <p class="introduction">信用卡付款資訊</p>
-                
-                    <div class="inputTitle">
-                        <div class = "sidebyside">
-                            <div>卡片號碼：</div><div class="inputBox" id="card-number"></div>
+                <hr class="hr2">
+                <form>
+                    <div class=sectionBox>
+                        <p class="introduction">您的聯絡資訊</p>
+                        <div class="inputTitle">
+                            聯絡姓名：<input type="text" id="contactName" class="inputBox" name="contactName"><br>
+                            連絡信箱：<input type="text" id="contactEmail" class="inputBox" name="contactEmail"><br>
+                            手機號碼：<input type="tel" id="contactNo" class="inputBox" name="contactNo"><br>
                         </div>
-                        <div class = "sidebyside">
-                            <div>過期時間：</div><div class="inputBox" id="card-expiration-date"></div>
-                        </div>
-                        <div class = "sidebyside">
-                            <div>驗證密碼：</div><div class="inputBox" id="card-ccv"></div>
+                        <p class="ps">請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</p>
+                    </div>
+
+                    <hr class="hr2">
+
+                    <div class=sectionBox>
+                        <p class="introduction">信用卡付款資訊</p>
+                        <div class="inputTitle">
+                            <div class="sidebyside">
+                                <div>卡片號碼：</div>
+                                <div class="inputBox" id="card-number"></div>
+                            </div>
+                            <div class="sidebyside">
+                                <div>過期時間：</div>
+                                <div class="inputBox" id="card-expiration-date"></div>
+                            </div>
+                            <div class="sidebyside">
+                                <div>驗證密碼：</div>
+                                <div class="inputBox" id="card-ccv"></div>
+                            </div>
                         </div>
                     </div>
+
+                    <hr class="hr2">
+
+                    <p class="popupWord"><span id="notComplete"></span></p>
+                    
+                    <div class="sectionBox_fee">
+                        <p class="ps">總價：<span id="ps"></span></p>
+                        <button type="submit" id="btnn" class="confirmBtn" onclick="onSubmit(event)">確認訂購並付款</button>
+                    </div>
+                </form>
             </div>
-            <hr class="hr2">
-            <p class="popupWord"><span id="notComplete"></span></p>
-            <div class="sectionBox_fee">
-                <p class="ps">總價：<span id="ps"></span></p>
-                <button type="submit" id="btnn" class="confirmBtn" onclick="onSubmit(event)">確認訂購並付款</button>
-            </div>            
-            </form>
+
+            <div id=noDataSection class="sectionBox" style="display: none">
+                <div id="noData"></div>
+            </div>
         </div>
-        <div id=noDataSection class="sectionBox" style="display: none">
-            <div id="noData"></div>
+
+        <div id="footer">
+            COPYRIGHT © 2021 台北一日遊
         </div>
     </div>
 
 
-    <div id="footer">
-        COPYRIGHT © 2021 台北一日遊
-    </div>
+
 
 
     <script>
@@ -538,7 +543,7 @@
         checkProcess()
         bookingInfo()
 
-        
+
 
 
         let memberBox_login = document.getElementById("memberBox_login");
@@ -610,7 +615,7 @@
         }
 
         logoutBtn.onclick = () => {
-            deleteProcess()
+            logoutProcess()
         }
 
         tourBtn.onclick = () => {
@@ -724,7 +729,7 @@
                 })
         }
 
-        async function deleteProcess() {
+        async function logoutProcess() {
             await fetch("/api/user", {
                 method: "DELETE",
                 headers: {
@@ -745,9 +750,9 @@
                 })
         }
 
-        
+
         let url_id;
-        
+
         async function bookingInfo() {
 
             await fetch("/api/booking", { method: "GET" })
@@ -761,8 +766,6 @@
                         document.getElementById("main").style.display = "none"
                         document.getElementById("noDataSection").style.display = "block"
                         document.getElementById("noData").innerHTML = res.message
-                        document.getElementById("footer").style.position = "absolute"
-                        document.getElementById("footer").style.height = "100%"
                     } else {
                         document.getElementById("main").style.display = "block"
                         document.getElementById("noDataSection").style.display = "none"
@@ -789,8 +792,6 @@
                         document.getElementById("main").style.display = "none"
                         document.getElementById("noDataSection").style.display = "block"
                         document.getElementById("noData").innerHTML = "目前沒有任何待預訂的行程"
-                        document.getElementById("footer").style.position = "absolute"
-                        document.getElementById("footer").style.height = "100%"
                     }
                 })
         }
@@ -856,54 +857,54 @@
             event.preventDefault()
             let name = document.getElementById("contactName").value
             let email = document.getElementById("contactEmail").value
-            let phone =  document.getElementById("contactNo").value
+            let phone = document.getElementById("contactNo").value
 
             console.log("click")
 
-            if (name === "" || email === "" || phone === ""){
+            if (name === "" || email === "" || phone === "") {
                 document.getElementById("notComplete").innerHTML = "請輸入聯絡資訊"
                 console.log("contact")
                 return
-                
-            }
-                // document.getElementById("notComplete").innerHTML = "DEMO"
-                console.log("card")
 
-                // Get prime
-                TPDirect.card.getPrime((result) => {
-                    console.log(result)
-                    if (result.status !== 0) {
-                        document.getElementById("notComplete").innerHTML = "請確認付款資訊是否正確"
-                    }else{
+            }
+            // document.getElementById("notComplete").innerHTML = "DEMO"
+            console.log("card")
+
+            // Get prime
+            TPDirect.card.getPrime((result) => {
+                console.log(result)
+                if (result.status !== 0) {
+                    document.getElementById("notComplete").innerHTML = "請確認付款資訊是否正確"
+                } else {
                     // alert('get prime 成功，prime: ' + result.card.prime)
 
-                        fetch("/api/orders", {
-                            method: "POST",
-                            headers: {
-                                "content-type": "application/json",
-                            },
-                            body: JSON.stringify({
-                                "prime": result.card.prime,
-                                "order": {
-                                    "price": document.getElementById("fee").innerHTML,
-                                    "trip": {
-                                        "attraction": {
-                                            "id": url_id,
-                                            "name": document.getElementById("name").innerHTML,
-                                            "address": document.getElementById("place").innerHTML,
-                                            "image": document.getElementById("tourPic").innerHTML,
-                                        },
-                                        "date": document.getElementById("date").innerHTML,
-                                        "time": document.getElementById("time").innerHTML,
+                    fetch("/api/orders", {
+                        method: "POST",
+                        headers: {
+                            "content-type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            "prime": result.card.prime,
+                            "order": {
+                                "price": document.getElementById("fee").innerHTML,
+                                "trip": {
+                                    "attraction": {
+                                        "id": url_id,
+                                        "name": document.getElementById("name").innerHTML,
+                                        "address": document.getElementById("place").innerHTML,
+                                        "image": document.getElementById("tourPic").innerHTML,
                                     },
-                                    "contact": {
-                                        "name": document.getElementById("contactName").value,
-                                        "email": document.getElementById("contactEmail").value,
-                                        "phone": document.getElementById("contactNo").value,
-                                    }
+                                    "date": document.getElementById("date").innerHTML,
+                                    "time": document.getElementById("time").innerHTML,
+                                },
+                                "contact": {
+                                    "name": document.getElementById("contactName").value,
+                                    "email": document.getElementById("contactEmail").value,
+                                    "phone": document.getElementById("contactNo").value,
                                 }
-                            })
+                            }
                         })
+                    })
                         .then(response => {
                             return response.json()
                         })
@@ -913,9 +914,9 @@
                             url_thankyou = "/thankyou?number=" + transactionId
                             window.location = url_thankyou
                         })
-                    }
-                })
-            
+                }
+            })
+
         }
 
     </script>

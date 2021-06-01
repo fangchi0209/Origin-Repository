@@ -88,9 +88,12 @@ async function search_page(item) {
 
 window.addEventListener("scroll", () => {
     if (next_page != null) {
+        console.log(document.documentElement.scrollHeight)
+        console.log(window.innerHeight)
 
         const scrollable = document.documentElement.scrollHeight - window.innerHeight;
         const scrolled = window.scrollY;
+        console.log(scrolled)
 
         if (Math.ceil(scrolled) === scrollable) {
 
@@ -106,8 +109,8 @@ window.addEventListener("scroll", () => {
 })
 
 
-let btn = document.getElementById("btn")
-btn.addEventListener("click", () => {
+let searchBtn = document.getElementById("searchBtn")
+searchBtn.addEventListener("click", () => {
     content.innerHTML = ""
     start_page = 0
     keyword = document.getElementById("searchKeyword").value;

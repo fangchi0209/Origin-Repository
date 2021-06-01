@@ -264,7 +264,7 @@ regBtn.onclick = function () {
 }
 
 logoutBtn.onclick = () => {
-    deleteProcess()
+    logoutProcess()
 }
 
 tourBtn.onclick = () => {
@@ -368,10 +368,7 @@ async function checkProcess() {
         })
 }
 
-
-
-
-async function deleteProcess() {
+async function logoutProcess() {
     await fetch("/api/user", {
         method: "DELETE",
         headers: {

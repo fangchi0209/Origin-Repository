@@ -3,19 +3,36 @@ import ssl
 import traceback
 import mysql.connector
 import requests
+import os
+from dotenv import load_dotenv
 from flask import Flask, jsonify, render_template, request, abort, session, redirect
+from mysql.connector import pooling, Error
+
 
 
 # import urllib.request as request
 
 # ssl._create_default_https_context = ssl._create_unverified_context
 
+load_dotenv()
+
+# connection_pool = pooling.MySQLConnectionPool(
+#     pool_name = os.getenv("DBpool"),
+#     pool_size = 5,
+#     pool_reset_session = True,
+#     host = os.getenv("DBhost"),
+#     database = os.getenv("DB"),
+#     user = os.getenv("DBuser"),
+#     password = os.getenv("DBpw")
+# )
+
+# mydb = connection_pool.get_connection()
 
 mydb = mysql.connector.connect(
-    host="127.0.0.1",
-    user="debian-sys-maint",
-    password="exgi5qGqkOVES8BL",
-    database="attractions"
+    host = os.getenv("DBhost"),
+    user = os.getenv("DBuser"),
+    password = os.getenv("DBpw"),
+    database = os.getenv("DB")
 )
 
 mycursor = mydb.cursor(buffered=True)
@@ -24,7 +41,7 @@ mycursor = mydb.cursor(buffered=True)
 app = Flask(__name__, static_folder="static_data", static_url_path="/")
 app.config["JSON_AS_ASCII"] = False
 app.config["TEMPLATES_AUTO_RELOAD"] = True
-app.secret_key = "aaa"
+app.secret_key = os.getenv("secretKey")
 
 # Pages
 
@@ -249,9 +266,6 @@ def loginPage():
 
     elif request.method == "DELETE":
         session.pop("memberEmail", None)
-        session.pop("date", None)
-        session.pop("price", None)
-        session.pop("time", None)
 
         return jsonify({
             "ok": True,
@@ -268,14 +282,14 @@ def bookingPage():
 
                 result = request.get_json()
                 print(result)
-                attractionId = result["attractionId"]
-                session["id"] = attractionId
+                bookingId = result["attractionId"]
                 date = result["date"]
-                session["date"] = date
                 time = result["time2"]
-                session["time"] = time
                 price = result["price"]
-                session["price"] = price
+                email = session["memberEmail"]
+                mycursor.execute(
+                    "INSERT INTO booking (booking_date, booking_time, booking_price, booking_id, member_email) VALUES (%s, %s, %s, %s, %s)", (date, time, price, bookingId, email))
+                mydb.commit()
 
                 if result["date"]:
                     return jsonify({
@@ -288,23 +302,30 @@ def bookingPage():
                     }), 400
 
             if request.method == "GET":
-                if "date" in session:
-                    sqlId = session["id"]
+                bookingEmail = session["memberEmail"]
+                mycursor.execute(
+                    "SELECT * FROM booking WHERE member_email = '%s' ORDER BY id DESC LIMIT 1" % (bookingEmail)
+                )
+                bookingData = mycursor.fetchone()
+                # print(bookingData)
+
+                if bookingData != None:
+                    attId = bookingData[4]
                     mycursor.execute(
-                        "SELECT * FROM information WHERE id = '%s'" % (sqlId))
-                    bookingResult = mycursor.fetchone()
-                    # print(bookingResult)
+                        "SELECT * FROM information WHERE id = '%s'" % (attId))
+                    bookingInfoResult = mycursor.fetchone()
+
                     return jsonify({
                         "data": {
                             "attraction": {
-                                "id": bookingResult[0],
-                                "name": bookingResult[1],
-                                "address": bookingResult[4],
-                                "image": bookingResult[9].split(",")[0]
+                                "id": bookingInfoResult[0],
+                                "name": bookingInfoResult[1],
+                                "address": bookingInfoResult[4],
+                                "image": bookingInfoResult[9].split(",")[0]
                             },
-                            "date": session["date"],
-                            "time": session["time"],
-                            "price": session["price"]
+                            "date": bookingData[1],
+                            "time": bookingData[2],
+                            "price": bookingData[3]
                         }
                     }), 200
                 else:
@@ -315,9 +336,12 @@ def bookingPage():
                     })
 
             if request.method == "DELETE":
-                session.pop("date", None)
-                session.pop("time", None)
-                session.pop("price", None)
+                deleteEmail = session["memberEmail"]
+                mycursor.execute(
+                    "DELETE FROM booking WHERE member_email = '%s'" % (
+                        deleteEmail)
+                )
+                mydb.commit()
                 return jsonify({
                     "ok": True
                 }), 200
@@ -346,9 +370,6 @@ def orders():
     prime = data["prime"]
     price = data["order"]["price"].split(" ")[1]
     urlId = data["order"]["trip"]["attraction"]["id"]
-    attName = data["order"]["trip"]["attraction"]["name"]
-    attAddress = data["order"]["trip"]["attraction"]["address"]
-    attImg = data["order"]["trip"]["attraction"]["image"]
     date = data["order"]["trip"]["date"]
     time = data["order"]["trip"]["time"]
     name = data["order"]["contact"]["name"]
@@ -360,12 +381,12 @@ def orders():
 
             header = {
                 "content-type": "application/json",
-                "x-api-key": "partner_YBS1MG19kwsN9sTNU7SbWKEghvbnAMwFt5greVEKaG2t101gNebKTNS0"
+                "x-api-key": os.getenv("partnerKey")
             }
 
             body = {
                 "prime": prime,
-                "partner_key": "partner_YBS1MG19kwsN9sTNU7SbWKEghvbnAMwFt5greVEKaG2t101gNebKTNS0",
+                "partner_key": os.getenv("partnerKey"),
                 "merchant_id": "Fangchi_CTBC",
                 "details": json.dumps({
                     "id": urlId,
@@ -384,6 +405,8 @@ def orders():
                               data=json.dumps(body), headers=header)
             result = json.loads(r.text)
             print(result)
+
+            session["transactionId"] = result["bank_transaction_id"]
 
             if result["status"] == 0:
                 return jsonify({
@@ -417,11 +440,14 @@ def orderNumber(orderNumber):
 
     header = {
         "content-type": "application/json",
-        "x-api-key": "partner_YBS1MG19kwsN9sTNU7SbWKEghvbnAMwFt5greVEKaG2t101gNebKTNS0"
+        "x-api-key": os.getenv("partnerKey")
     }
 
     body = {
-        "partner_key": "partner_YBS1MG19kwsN9sTNU7SbWKEghvbnAMwFt5greVEKaG2t101gNebKTNS0"
+        "partner_key": os.getenv("partnerKey"),
+        "filters": {
+            "bank_transaction_id": orderNumber,
+        }
     }
 
     x = requests.post("https://sandbox.tappaysdk.com/tpc/transaction/query",
@@ -429,42 +455,48 @@ def orderNumber(orderNumber):
     res = json.loads(x.text)
     # print(res)
 
-    transactionList = res["trade_records"]
-    theOne = next(
-        item for item in transactionList if item["bank_transaction_id"] == orderNumber)
+    transactionDic = res["trade_records"][0]
+
+    # theOne = next(
+    #     item for item in transactionList if item["bank_transaction_id"] == orderNumber)
     # print(theOne)
 
-    orderId = json.loads(theOne["details"])["id"]
+    orderId = json.loads(transactionDic["details"])["id"]
     mycursor.execute("SELECT * FROM information WHERE id = '%s'" % (orderId))
     orderResult = mycursor.fetchone()
     # print(orderResult)
 
+    bookingDelete = session["memberEmail"]
+    mycursor.execute(
+        "DELETE FROM booking WHERE member_email = '%s'" % (bookingDelete)
+    )
+    mydb.commit()
     if "memberEmail" in session:
         return jsonify({
             "data": {
-                "price": theOne["amount"],
+                "price": transactionDic["amount"],
                 "trip": {
-                    "id": json.loads(theOne["details"])["id"],
+                    "id": orderId,
                     "name": orderResult[1],
                     "address": orderResult[4],
                     "image": orderResult[9].split(",")[0]
                 },
-                "date": json.loads(theOne["details"])["date"],
-                "time": json.loads(theOne["details"])["time"]
+                "date": json.loads(transactionDic["details"])["date"],
+                "time": json.loads(transactionDic["details"])["time"]
             },
             "contact": {
-                "name": theOne["cardholder"]["name"],
-                "email": theOne["cardholder"]["email"],
-                "phone": theOne["cardholder"]["phone_number"]
+                "name": transactionDic["cardholder"]["name"],
+                "email": transactionDic["cardholder"]["email"],
+                "phone": transactionDic["cardholder"]["phone_number"]
             },
-            "status": theOne["record_status"]
-        }),200
+            "status": transactionDic["record_status"]
+        }), 200
 
     else:
         return jsonify({
             "error": True,
             "message": "未登入系統，拒絕存取"
-        }),403
+        }), 403
 
 
-app.run(host="0.0.0.0", port=3000, debug=True)
+app.run(host="0.0.0.0", port=80, debug=True)
