@@ -287,6 +287,7 @@ def bookingPage():
                 time = result["time2"]
                 price = result["price"]
                 email = session["memberEmail"]
+                print(email)
                 mycursor.execute(
                     "INSERT INTO booking (booking_date, booking_time, booking_price, booking_id, member_email) VALUES (%s, %s, %s, %s, %s)", (date, time, price, bookingId, email))
                 mydb.commit()
@@ -499,4 +500,4 @@ def orderNumber(orderNumber):
         }), 403
 
 
-app.run(host="0.0.0.0", port=80, debug=True)
+app.run(host="0.0.0.0", port=3000, debug=True)
