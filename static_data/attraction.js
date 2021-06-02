@@ -428,10 +428,11 @@ async function bookProcedure() {
         })
         .then(data => {
             if (data.error == true) {
-                document.getElementById("failLogin").innerHTML = data.message
+                document.getElementById("notice").innerHTML = data.message
             }
             else {
                 window.location = '/booking'
+                document.getElementById("notice").style.display = "none"
             }
         })
 }

@@ -288,11 +288,12 @@ def bookingPage():
                 price = result["price"]
                 email = session["memberEmail"]
                 print(email)
-                mycursor.execute(
-                    "INSERT INTO booking (booking_date, booking_time, booking_price, booking_id, member_email) VALUES (%s, %s, %s, %s, %s)", (date, time, price, bookingId, email))
-                mydb.commit()
 
                 if result["date"]:
+                    mycursor.execute(
+                    "INSERT INTO booking (booking_date, booking_time, booking_price, booking_id, member_email) VALUES (%s, %s, %s, %s, %s)", (date, time, price, bookingId, email))
+                    mydb.commit()
+
                     return jsonify({
                         "ok": True,
                     }), 200
