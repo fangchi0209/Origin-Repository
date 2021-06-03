@@ -442,14 +442,16 @@ nav {
 
 
     .slogan{
-        left: 50px;
+        left: 0px;
         width: 370px;
+        text-align: center;
         margin: auto;
         padding: 0px;
     }
 
     .search {
-        width: 80%;
+        width: 75%;
+        margin: auto;
     }
 
     #searchBtn {

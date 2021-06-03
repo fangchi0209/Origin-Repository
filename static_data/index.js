@@ -16,8 +16,7 @@ async function search_page(item) {
     let cur_page = 0
     isMouseAtBottom = true;
     src = "api/attractions?page="
-    // console.log(item,keyword)
-    if (item != null & keyword != null) {
+    if (item != null & keyword.length != 0) {
         src += `${start_page}&keyword=${keyword}`
     } else (
         src += `${start_page}`
@@ -89,12 +88,12 @@ async function search_page(item) {
 
 window.addEventListener("scroll", () => {
     if (next_page != null) {
-        console.log(document.documentElement.scrollHeight)
-        console.log(window.innerHeight)
+        // console.log(document.documentElement.scrollHeight)
+        // console.log(window.innerHeight)
 
         const scrollable = document.documentElement.scrollHeight - window.innerHeight;
         const scrolled = window.scrollY;
-        console.log(scrolled)
+        // console.log(scrolled)
 
         if (Math.ceil(scrolled) === scrollable) {
 
@@ -102,7 +101,6 @@ window.addEventListener("scroll", () => {
                 isMouseAtBottom = true;
                 start_page = next_page;
                 // console.log(start_page)
-
                 search_page(start_page)
             }
         }
