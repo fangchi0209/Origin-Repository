@@ -109,7 +109,8 @@ window.addEventListener("scroll", () => {
 
 
 let searchBtn = document.getElementById("searchBtn")
-searchBtn.addEventListener("click", () => {
+searchBtn.addEventListener("click", (e) => {
+    e.preventDefault()
     content.innerHTML = ""
     start_page = 0
     search_page(start_page)

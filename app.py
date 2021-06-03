@@ -15,27 +15,14 @@ from mysql.connector import pooling, Error
 
 load_dotenv()
 
-# connection_pool = pooling.MySQLConnectionPool(
-#     pool_name = os.getenv("DBpool"),
-#     pool_size = 5,
-#     pool_reset_session = True,
-#     host = os.getenv("DBhost"),
-#     database = os.getenv("DB"),
-#     user = os.getenv("DBuser"),
-#     password = os.getenv("DBpw")
-# )
-
-# mydb = connection_pool.get_connection()
-
-mydb = mysql.connector.connect(
+connection_pool = pooling.MySQLConnectionPool(
+    pool_name = os.getenv("DBpool"),
+    pool_size = 5,
     host=os.getenv("DBhost"),
     user=os.getenv("DBuser"),
     password=os.getenv("DBpw"),
     database=os.getenv("DB")
 )
-
-mycursor = mydb.cursor(buffered=True)
-
 
 app = Flask(__name__, static_folder="static_data", static_url_path="/")
 app.config["JSON_AS_ASCII"] = False
@@ -73,6 +60,9 @@ def thankyou():
 
 @app.route("/api/attractions", methods=["GET"])
 def findPage():
+    mydb = connection_pool.get_connection()
+    mycursor = mydb.cursor(buffered=True)
+
     if request.args.get("keyword") == None:
         searchPage = int(request.args["page"])
         perpage = 12
@@ -102,6 +92,8 @@ def findPage():
             }
             data = data_dictionary.copy()
             page_pic.append(data)
+        
+        mydb.close()
 
         return json.dumps({"nextPage": next_page, "data": page_pic}, ensure_ascii=False)
 
@@ -141,17 +133,22 @@ def findPage():
             data = data_dictionary.copy()
             page_pic.append(data)
 
+        mydb.close()
+
         return json.dumps({"nextPage": next_page, "data": page_pic}, ensure_ascii=False)
 
 
 @app.route("/api/attraction/<attractionId>")
 def findId(attractionId):
+    mydb = connection_pool.get_connection()
+    mycursor = mydb.cursor(buffered=True)
     try:
         mycursor.execute(
             "SELECT * FROM information WHERE id = '%s'" % (attractionId))
         searchId = mycursor.fetchone()
         # print(type(searchId))
         if searchId != None:
+            mydb.close()
             return json.dumps({"data": {
                 "id": searchId[0],
                 "name": searchId[1],
@@ -165,6 +162,7 @@ def findId(attractionId):
                 "images": searchId[9].split(",")
             }})
         else:
+            mydb.close()
             return json.dumps({"error": True,
                                "message": "請輸入正確的ID"}), 400
 
@@ -184,6 +182,8 @@ def error_500(error):
 
 @app.route("/api/user", methods=["GET", "POST", "PATCH", "DELETE"])
 def loginPage():
+    mydb = connection_pool.get_connection()
+    mycursor = mydb.cursor(buffered=True)
 
     if request.method == "PATCH":
         data = request.get_json()
@@ -197,6 +197,7 @@ def loginPage():
                 if sqlPassword == loginResult[3]:
                     session["memberEmail"] = loginResult[2]
                     session["memberName"] = loginResult[1]
+                    mydb.close()
                     return jsonify({
                         "data": {
                             "id": loginResult[0],
@@ -205,12 +206,14 @@ def loginPage():
                         }
                     }), 200
                 else:
+                    mydb.close()
                     return jsonify({
                         "error": True,
                         "message": "密碼錯誤"
                     }), 400
 
         except:
+            mydb.close()
             return jsonify({
                 "error": True,
                 "message": "無此帳號"
@@ -228,6 +231,7 @@ def loginPage():
         try:
             if registerResult == None:
                 if len(sqlName) == 0 or len(sqlEmail) == 0 or len(sqlPassword) == 0:
+                    mydb.close()
                     return jsonify({
                         "error": True,
                         "message": "請填妥所有資料"
@@ -236,18 +240,21 @@ def loginPage():
                     mycursor.execute(
                         "INSERT INTO member (name, email, password) VALUES (%s, %s, %s)", (sqlName, sqlEmail, sqlPassword))
                     mydb.commit()
+                    mydb.close()
                     return jsonify({
                         "ok": True,
                         "message": "註冊成功, 請重新登入"
                     }), 200
 
             else:
+                mydb.close()
                 return jsonify({
                     "error": True,
                     "message": "註冊失敗, Email重複註冊",
                 }), 400
 
         except:
+            mydb.close()
             return jsonify({
                 "error": True,
                 "message": "伺服器內部錯誤"
@@ -255,17 +262,19 @@ def loginPage():
 
     elif request.method == "GET":
         if "memberEmail" in session:
+            mydb.close()
             return jsonify({
                 "data": True,
             })
         else:
+            mydb.close()
             return jsonify({
                 "data": None,
             })
 
     elif request.method == "DELETE":
         session.pop("memberEmail", None)
-
+        mydb.close()
         return jsonify({
             "ok": True,
         })
@@ -273,6 +282,8 @@ def loginPage():
 
 @app.route("/api/booking", methods=["GET", "POST", "DELETE"])
 def bookingPage():
+    mydb = connection_pool.get_connection()
+    mycursor = mydb.cursor(buffered=True)
 
     try:
         if "memberEmail" in session:
@@ -292,11 +303,12 @@ def bookingPage():
                     mycursor.execute(
                     "INSERT INTO booking (booking_date, booking_time, booking_price, booking_id, member_email) VALUES (%s, %s, %s, %s, %s)", (date, time, price, bookingId, email))
                     mydb.commit()
-
+                    mydb.close()
                     return jsonify({
                         "ok": True,
                     }), 200
                 else:
+                    mydb.close()
                     return jsonify({
                         "error": True,
                         "message": "請選取日期"
@@ -315,7 +327,7 @@ def bookingPage():
                     mycursor.execute(
                         "SELECT * FROM information WHERE id = '%s'" % (attId))
                     bookingInfoResult = mycursor.fetchone()
-
+                    mydb.close()
                     return jsonify({
                         "data": {
                             "attraction": {
@@ -330,6 +342,7 @@ def bookingPage():
                         }
                     }), 200
                 else:
+                    mydb.close()
                     return jsonify({
                         "error": True,
                         "message": "目前沒有任何待預訂的行程"
@@ -343,21 +356,25 @@ def bookingPage():
                         deleteEmail)
                 )
                 mydb.commit()
+                mydb.close()
                 return jsonify({
                     "ok": True
                 }), 200
             else:
+                mydb.close()
                 return jsonify({
                     "error": True
                 })
 
         else:
+            mydb.close()
             return jsonify({
                 "error": True,
                 "message": "請先登入"
             }), 403
 
     except:
+        mydb.close
         return jsonify({
             "error": True,
             "message": "伺服器內部錯誤"
@@ -366,6 +383,8 @@ def bookingPage():
 
 @app.route("/api/orders", methods=["POST"])
 def orders():
+    mydb = connection_pool.get_connection()
+    mycursor = mydb.cursor(buffered=True)
 
     data = request.get_json()
     prime = data["prime"]
@@ -410,6 +429,7 @@ def orders():
             session["transactionId"] = result["bank_transaction_id"]
 
             if result["status"] == 0:
+                mydb.close()
                 return jsonify({
                     "data": {
                         "number": result["bank_transaction_id"],
@@ -420,16 +440,19 @@ def orders():
                     }
                 }), 200
             else:
+                mydb.close()
                 return jsonify({
                     "error": True,
                     "message": "訂單建立失敗"
                 })
         else:
+            mydb.close()
             return jsonify({
                 "error": True,
                 "message": "未登入系統, 拒絕存取"
             }), 403
     except:
+        mydb.close()
         return jsonify({
             "error": True,
             "message": "伺服器內部錯誤"
@@ -438,6 +461,9 @@ def orders():
 
 @app.route("/api/order/<orderNumber>", methods=["GET"])
 def orderNumber(orderNumber):
+
+    mydb = connection_pool.get_connection()
+    mycursor = mydb.cursor(buffered=True)
 
     header = {
         "content-type": "application/json",
@@ -473,6 +499,7 @@ def orderNumber(orderNumber):
     )
     mydb.commit()
     if "memberEmail" in session:
+        mydb.close()
         return jsonify({
             "data": {
                 "price": transactionDic["amount"],
@@ -494,6 +521,7 @@ def orderNumber(orderNumber):
         }), 200
 
     else:
+        mydb.close()
         return jsonify({
             "error": True,
             "message": "未登入系統，拒絕存取"
