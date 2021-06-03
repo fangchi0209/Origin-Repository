@@ -11,6 +11,7 @@ search_page(start_page)
 
 async function search_page(item) {
     let keyword;
+    keyword = document.getElementById("searchKeyword").value
     let data;
     let cur_page = 0
     isMouseAtBottom = true;
@@ -113,7 +114,6 @@ let searchBtn = document.getElementById("searchBtn")
 searchBtn.addEventListener("click", () => {
     content.innerHTML = ""
     start_page = 0
-    keyword = document.getElementById("searchKeyword").value;
     search_page(start_page)
 
 })
