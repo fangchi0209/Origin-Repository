@@ -142,7 +142,7 @@ def findPage():
 def findId(attractionId):
     mydb = connection_pool.get_connection()
     mycursor = mydb.cursor(buffered=True)
-
+    
     try:
         mycursor.execute(
             "SELECT * FROM information WHERE id = '%s'" % (attractionId))
@@ -150,7 +150,7 @@ def findId(attractionId):
         # print(type(searchId))
         if searchId != None:
             mydb.close()
-            a = {"data": {
+            return json.dumps({"data": {
                 "id": searchId[0],
                 "name": searchId[1],
                 "category": searchId[2],
@@ -161,8 +161,7 @@ def findId(attractionId):
                 "latitude": searchId[7],
                 "longitutde": searchId[8],
                 "images": searchId[9].split(",")
-            }}
-            return json.dumps()
+            }})
         else:
             mydb.close()
             return json.dumps({"error": True,
