@@ -142,14 +142,6 @@ def findPage():
 def findId(attractionId):
     mydb = connection_pool.get_connection()
     mycursor = mydb.cursor(buffered=True)
-    w = requests.get("https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-D0047-091?Authorization=CWB-A4B14C16-E577-455F-8249-669DDD3B3FE0&locationName=%E8%87%BA%E5%8C%97%E5%B8%82")
-    weather = json.loads(w.text)
-
-    demo = weather["records"]["locations"][0]
-    # print(demo)
-    test = demo["location"][0]
-    find = test["weatherElement"][6]
-    print(find)
 
     try:
         mycursor.execute(
