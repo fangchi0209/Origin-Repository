@@ -8,6 +8,7 @@
 
     <link rel="stylesheet" type="text/css" href="/attraction.css" />
 
+    <script src="https://kit.fontawesome.com/cbebce4b6d.js" crossorigin="anonymous"></script>
 
 
 </head>
@@ -37,7 +38,7 @@
         width: 1200px;
         height: 34px;
         display: flex;
-        margin: 0px auto;
+        margin: 0px auto 5px auto;
     }
 
     .header {
@@ -54,11 +55,22 @@
         color: #448899;
     }
 
+    .menuSection {
+        display: flex;
+        flex-direction: row;
+    }
+
     .menu {
         font-family: Noto Sans TC;
         font-size: 16px;
         color: #666666;
         margin: 10px 5px;
+        transition: opacity 0.2s;
+    }
+
+
+    .menuSection:hover .menu:not(:hover) {
+        opacity: 0.5;
     }
 
     #tourBtn,
@@ -141,15 +153,25 @@
         flex-wrap: wrap;
     }
 
+
     .memBtn {
         width: 310px;
         background: #448899;
         border-radius: 5px;
         margin: 5px;
         border: none;
+        padding: 10px;
         font-family: Noto Sans TC;
         font-size: 19px;
         color: #FFFFFF;
+        cursor: pointer;
+        transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+    }
+
+
+    .memBtn:hover {
+        transform: translate3d(0px, -1px, 0px);
+        box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08);
     }
 
     .memberLink {
@@ -160,10 +182,26 @@
         margin: 5px;
     }
 
-    #logBtn,
-    #regBtn {
-        text-decoration: none;
-        color: #666666;
+    .memberLink a {
+        position: relative;
+    }
+
+    .memberLink a::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        transform: scaleX(0);
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background-color: #666666;
+        transform-origin: bottom right;
+        transition: transform 0.4s cubic-bezier(0.86, 0, 0.07, 1);
+    }
+
+    .memberLink a:hover::after {
+        transform: scaleX(1);
+        transform-origin: bottom left;
     }
 
     .popupWord {
@@ -181,11 +219,11 @@
     }
 
     #wrap {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            margin: 50px auto 0px auto;
-        }
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        margin: 50px auto 0px auto;
+    }
 
     .sectionConfirm {
         display: flex;
@@ -341,19 +379,19 @@
     }
 
     #footer {
-            display: flex;
-            width: 100%;
-            margin-top: 20px;
-            padding-top: 20px;
-            padding-bottom: 20px;
-            justify-content: center;
-            background: #757575;
-            color: white;
-            font-family: Noto Sans TC;
-            font-weight: bold;
-            font-size: 16px;
-            flex-grow: 1;
-        }
+        display: flex;
+        width: 100%;
+        margin-top: 20px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        justify-content: center;
+        background: #757575;
+        color: white;
+        font-family: Noto Sans TC;
+        font-weight: bold;
+        font-size: 16px;
+        flex-grow: 1;
+    }
 
     .bg {
         background-color: #000;
@@ -389,6 +427,13 @@
         background-size: cover;
     }
 
+    #copyAction {
+        font-size: 35px;
+        margin-left: 10px;
+        text-decoration: none;
+        color: #448899;
+    }
+
 
     @media (max-width:1199px) {
 
@@ -422,9 +467,11 @@
     <nav>
         <div class="first">
             <div class="header"><a href="/">台北一日遊</a></div>
-            <div class="menu"><a id="tourBtn" href="javascript:void(0)" style="display:none">預定行程</a></div>
-            <div class="menu"><a id="adminBtn" href="javascript:void(0)" style="display:none">登入/註冊</a></div>
-            <div class="menu"><a id="logoutBtn" href="javascript:void(0)" style="display:none">登出</a></div>
+            <div class="menuSection">
+                <div class="menu"><a id="tourBtn" href="javascript:void(0)" style="display:none">預定行程</a></div>
+                <div class="menu"><a id="adminBtn" href="javascript:void(0)" style="display:none">登入/註冊</a></div>
+                <div class="menu"><a id="logoutBtn" href="javascript:void(0)" style="display:none">登出</a></div>
+            </div>
         </div>
     </nav>
 
@@ -464,7 +511,7 @@
             </form>
         </div>
     </div>
-    
+
     <div id="wrap">
         <div id="tickIcon"></div>
         <div class="section">
@@ -473,6 +520,7 @@
                 <div class="sidebyside" style="justify-content:center">
                     <div class="tourInfoTitle2">訂單編號：</div>
                     <div id="confirmId" class="tourInfoTitle2"></div>
+                    <a id="copyAction" href="javascript:void(0)"><i class="far fa-copy"></i></a>
                 </div>
                 <p class="popupWord">請拍照或儲存此訂單編號，以便日候查詢。</p>
             </div>
@@ -593,6 +641,13 @@
         }
 
 
+        document.getElementById("copyAction").addEventListener("click", function () {
+            let copyNumber = document.getElementById("confirmId")
+            let range = document.createRange()
+            range.selectNode(copyNumber)
+            window.getSelection().addRange(range)
+            document.execCommand("Copy")
+        })
 
         // document.getElementById("loginBox").onclick = (r) => {
         //     r.preventDefault()

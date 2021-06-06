@@ -55,6 +55,7 @@ async function search_page(item) {
             let img_tag = document.createElement("div");
             let station_tag = document.createElement("div");
             let cat_tag = document.createElement("div");
+            let mrt_cat_tag = document.createElement("div");
             let box_tag = document.createElement("div");
             let url_tag = document.createElement("a");
 
@@ -64,6 +65,7 @@ async function search_page(item) {
             img_tag.classList.add("attractions_img");
             station_tag.classList.add("station");
             cat_tag.classList.add("cat");
+            mrt_cat_tag.classList.add("MrtCat")
             box_tag.classList.add("box");
             url_tag.classList.add("attractions_url")
 
@@ -73,10 +75,11 @@ async function search_page(item) {
             station_tag.appendChild(station_name);
             cat_tag.appendChild(cat_name);
 
+            mrt_cat_tag.appendChild(station_tag);
+            mrt_cat_tag.appendChild(cat_tag);
             url_tag.appendChild(img_tag);
             url_tag.appendChild(info_tag);
-            url_tag.appendChild(station_tag);
-            url_tag.appendChild(cat_tag);
+            url_tag.appendChild(mrt_cat_tag);
             box_tag.appendChild(url_tag);
             content.appendChild(box_tag);
             // console.log(box_tag)

@@ -1,5 +1,6 @@
 @import url(//fonts.googleapis.com/earlyaccess/notosanstc.css);
 
+
 html, body {
     margin: 0;
     height: 100%;
@@ -39,18 +40,30 @@ nav {
     color: #448899;
 }
 
+.menuSection {
+    display: flex;
+    flex-direction: row;
+}
+
 .menu {
-    /* Body - Reg 16(13.3) */
     font-family: Noto Sans TC;
     font-size: 16px;
     color: #666666;
     margin: 10px 5px;
+    transition: opacity 0.2s;
 }
+
+
+.menuSection:hover .menu:not(:hover){
+    opacity: 0.5;
+}
+
 
 #tourBtn, #adminBtn, #logoutBtn, #logBtn, #regBtn {
     text-decoration: none;
     color: #666666;
 }
+
 
 .memberBoxSection {
     position: fixed;
@@ -115,7 +128,7 @@ nav {
     font-family: Noto Sans TC;
     font-size: 16px;
     color: #666666;
-
+    outline: none;
 }
 
 .memBtn {
@@ -128,7 +141,16 @@ nav {
     font-family: Noto Sans TC;
     font-size: 19px;
     color: #FFFFFF;
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
     }
+
+    
+.memBtn:hover {
+    transform: translate3d(0px,-1px,0px);
+    box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08);
+}
+
 
 .memberLink {
     width: 310px;
@@ -138,6 +160,30 @@ nav {
     margin: 5px;
     cursor: pointer;
 }
+
+.memberLink a{
+    position: relative;
+}
+  
+.memberLink a::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #666666;
+    transform-origin: bottom right;
+    transition: transform 0.4s cubic-bezier(0.86, 0, 0.07, 1);
+}
+  
+.memberLink a:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+  
+
 
 .popupWord {
     width: 310px;
@@ -224,17 +270,13 @@ nav {
     /* btn */
     width: 60px;
     height: 46px;
-    left: 400px;
-    top: 0px;
     background: #448899;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
-    flex: none;
     border: 0px;
 }
 
 .search_icon {
-    /* icon / search */
     width: 30px;
     height: 30px;
     margin: auto;
@@ -243,16 +285,15 @@ nav {
 }
 
 .searchBox {
-    /* input */
     width: 398px;
-    height: 44px;
-    left: 0px;
-    top: 0px;
+    height: 46px;
+    padding: 0px;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
     border: 0px;
-    outline: none;
     background: #FFFFFF;
+    text-indent: 10px;
+    outline: none;
 }
 
 #searchKeyword::placeholder {
@@ -278,19 +319,19 @@ nav {
 }
 
 .box {
-    /* Attraction | Desktop */
     width: 270px;
     height: 242px;
-    left: 0px;
-    top: 0px;
-    flex: none;
     margin: 10px 0px;
-
-    /* White */
     background: #FFFFFF;
     border: 1px solid #E8E8E8;
     box-sizing: border-box;
     border-radius: 5px;
+    -webkit-transition: .25s ease-in;
+    transition: .25s ease-in;
+}
+
+.box:hover {
+    transform : scale(1.1);
 }
 
 .attractions_url {
@@ -304,9 +345,6 @@ nav {
     background-size: cover;
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
-    left: 0px;
-    top: 0px;
-
 }
 
 .attractions_text {
@@ -317,10 +355,13 @@ nav {
     font-family: Noto Sans TC;
     font-weight: bold;
     font-size: 16px;
-    line-height: 13px;
-    display: flex;
-    align-items: center;
     color: #757575;
+}
+
+.MrtCat {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
 }
 
 .station {
@@ -330,29 +371,21 @@ nav {
     margin-left: 10px;
     font-family: Noto Sans TC;
     font-size: 16px;
-    line-height: 13px;
-    flex: none;
-    align-items: center;
     color: #757575;
 }
 
 .cat {
     width: 125px;
     height: 20px;
-    top: 210px;
-    margin-top: -20px;
-    margin-left: 130px;
-
-    /* Body - Reg 16(13.3) */
+    margin-top: 10px;
+    margin-right: 10px;
     font-family: Noto Sans TC;
     font-size: 16px;
-    line-height: 13px;
-    flex: none;
-    align-items: center;
     text-align: right;
-    justify-content: flex-end;
     color: #757575;
 }
+
+
 
 #footer {
     display: flex;

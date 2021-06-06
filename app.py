@@ -142,6 +142,15 @@ def findPage():
 def findId(attractionId):
     mydb = connection_pool.get_connection()
     mycursor = mydb.cursor(buffered=True)
+    w = requests.get("https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-D0047-091?Authorization=CWB-A4B14C16-E577-455F-8249-669DDD3B3FE0&locationName=%E8%87%BA%E5%8C%97%E5%B8%82")
+    weather = json.loads(w.text)
+
+    demo = weather["records"]["locations"][0]
+    # print(demo)
+    test = demo["location"][0]
+    find = test["weatherElement"][6]
+    print(find)
+
     try:
         mycursor.execute(
             "SELECT * FROM information WHERE id = '%s'" % (attractionId))
@@ -149,7 +158,7 @@ def findId(attractionId):
         # print(type(searchId))
         if searchId != None:
             mydb.close()
-            return json.dumps({"data": {
+            a = {"data": {
                 "id": searchId[0],
                 "name": searchId[1],
                 "category": searchId[2],
@@ -160,7 +169,8 @@ def findId(attractionId):
                 "latitude": searchId[7],
                 "longitutde": searchId[8],
                 "images": searchId[9].split(",")
-            }})
+            }}
+            return json.dumps()
         else:
             mydb.close()
             return json.dumps({"error": True,
@@ -424,7 +434,7 @@ def orders():
             r = requests.post("https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime",
                               data=json.dumps(body), headers=header)
             result = json.loads(r.text)
-            print(result)
+            # print(result)
 
             session["transactionId"] = result["bank_transaction_id"]
 
@@ -483,6 +493,7 @@ def orderNumber(orderNumber):
     # print(res)
 
     transactionDic = res["trade_records"][0]
+    print(transactionDic)
 
     # theOne = next(
     #     item for item in transactionList if item["bank_transaction_id"] == orderNumber)

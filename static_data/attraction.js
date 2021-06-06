@@ -16,7 +16,6 @@ let length_pic = 0;
 
 checkProcess()
 showOneData(src_id);
-handleClick("1")
 handleClick("早上 9 點到下午 4 點")
 
 
@@ -192,6 +191,10 @@ function animate_left(offset, b) {
 
 windowSize();
 
+
+var today = new Date().toISOString().split('T')[0]; 
+ 
+document.getElementsByName("calendar")[0].setAttribute('min', today);
 
 
 
@@ -385,7 +388,6 @@ async function logoutProcess() {
             }
         })
 }
-
 
 
 document.getElementById("bookingInfo").onclick = (u) => {

@@ -39,11 +39,22 @@ nav {
     color: #448899;
 }
 
+.menuSection {
+    display: flex;
+    flex-direction: row;
+}
+
 .menu {
     font-family: Noto Sans TC;
     font-size: 16px;
     color: #666666;
     margin: 10px 5px;
+    transition: opacity 0.2s;
+}
+
+
+.menuSection:hover .menu:not(:hover){
+    opacity: 0.5;
 }
 
 
@@ -115,7 +126,7 @@ nav {
     font-family: Noto Sans TC;
     font-size: 16px;
     color: #666666;
-
+    outline: none;
 }
 
 .memBtn {
@@ -124,10 +135,19 @@ nav {
     border-radius: 5px;
     margin: 5px;
     border: none;
+    padding: 10px;
     font-family: Noto Sans TC;
     font-size: 19px;
     color: #FFFFFF;
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
     }
+
+    
+.memBtn:hover {
+    transform: translate3d(0px,-1px,0px);
+    box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08);
+}
 
 .memberLink {
     width: 310px;
@@ -135,6 +155,28 @@ nav {
     font-size: 16px;
     text-align:center;
     margin: 5px;
+}
+
+.memberLink a{
+    position: relative;
+}
+  
+.memberLink a::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #666666;
+    transform-origin: bottom right;
+    transition: transform 0.4s cubic-bezier(0.86, 0, 0.07, 1);
+}
+  
+.memberLink a:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
 }
 
 .popupWord {
@@ -294,6 +336,7 @@ nav {
     font-size: 16px;
     color: #666666;
     cursor: pointer;
+    outline: none;
 }
 
 .time {
@@ -327,7 +370,6 @@ nav {
 /* Hide the browser's default radio button */
 .time input {
     opacity: 0;
-    cursor: cell;
   }
 
 /* Create a custom radio button */
@@ -397,7 +439,14 @@ nav {
     border-radius: 5px;
     border: none;
     cursor: pointer;
-  }
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+}
+
+
+#bookBtn:hover {
+transform: translate3d(0px,-1px,0px);
+box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08);
+}
 
   .hr2 {
     width: 100%;

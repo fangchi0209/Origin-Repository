@@ -8,7 +8,7 @@
 
     <link rel="stylesheet" type="text/css" href="/attraction.css" />
 
-
+    <script src="https://kit.fontawesome.com/cbebce4b6d.js" crossorigin="anonymous"></script>
 
 </head>
 
@@ -38,7 +38,7 @@
             width: 1200px;
             height: 34px;
             display: flex;
-            margin: 0px auto;
+            margin: 0px auto 5px auto;
         }
 
         .header {
@@ -55,11 +55,22 @@
             color: #448899;
         }
 
+        .menuSection {
+            display: flex;
+            flex-direction: row;
+        }
+
         .menu {
             font-family: Noto Sans TC;
             font-size: 16px;
             color: #666666;
             margin: 10px 5px;
+            transition: opacity 0.2s;
+        }
+
+
+        .menuSection:hover .menu:not(:hover) {
+            opacity: 0.5;
         }
 
         #tourBtn,
@@ -144,9 +155,18 @@
             border-radius: 5px;
             margin: 5px;
             border: none;
+            padding: 10px;
             font-family: Noto Sans TC;
             font-size: 19px;
             color: #FFFFFF;
+            cursor: pointer;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+        }
+
+
+        .memBtn:hover {
+            transform: translate3d(0px, -1px, 0px);
+            box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08);
         }
 
         .memberLink {
@@ -155,6 +175,28 @@
             font-size: 16px;
             text-align: center;
             margin: 5px;
+        }
+
+        .memberLink a {
+            position: relative;
+        }
+
+        .memberLink a::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #666666;
+            transform-origin: bottom right;
+            transition: transform 0.4s cubic-bezier(0.86, 0, 0.07, 1);
+        }
+
+        .memberLink a:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
         }
 
         .popupWord {
@@ -346,6 +388,13 @@
             z-index: 100;
         }
 
+        #processing {
+            font-family: Noto Sans TC;
+            color: #666666;
+            font-size: 16px;
+            margin: 10px;
+        }
+
         @media (max-width:1199px) {
 
             #wrapSection {
@@ -413,9 +462,11 @@
     <nav>
         <div class="first">
             <div class="header"><a href="/">台北一日遊</a></div>
-            <div class="menu"><a id="tourBtn" href="javascript:void(0)" style="display:none">預定行程</a></div>
-            <div class="menu"><a id="adminBtn" href="javascript:void(0)" style="display:none">登入/註冊</a></div>
-            <div class="menu"><a id="logoutBtn" href="javascript:void(0)" style="display:none">登出</a></div>
+            <div class="menuSection">
+                <div class="menu"><a id="tourBtn" href="javascript:void(0)" style="display:none">預定行程</a></div>
+                <div class="menu"><a id="adminBtn" href="javascript:void(0)" style="display:none">登入/註冊</a></div>
+                <div class="menu"><a id="logoutBtn" href="javascript:void(0)" style="display:none">登出</a></div>
+            </div>
         </div>
     </nav>
 
@@ -486,8 +537,8 @@
                     <div class=sectionBox>
                         <p class="introduction">您的聯絡資訊</p>
                         <div class="inputTitle">
-                            聯絡姓名：<input type="text" id="contactName" class="inputBox" name="contactName"><br>
-                            連絡信箱：<input type="text" id="contactEmail" class="inputBox" name="contactEmail"><br>
+                            聯絡姓名：<input type="text" id="contactName" class="inputBox" name="contactName" value='{{session.memberName}}'><br>
+                            連絡信箱：<input type="email" id="contactEmail" class="inputBox" name="logEmail" value='{{session.memberEmail}}'><br>
                             手機號碼：<input type="tel" id="contactNo" class="inputBox" name="contactNo"><br>
                         </div>
                         <p class="ps">請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</p>
@@ -516,12 +567,15 @@
                     <hr class="hr2">
 
                     <p class="popupWord"><span id="notComplete"></span></p>
-                    
+
                     <div class="sectionBox_fee">
                         <p class="ps">總價：<span id="ps"></span></p>
                         <button type="submit" id="btnn" class="confirmBtn" onclick="onSubmit(event)">確認訂購並付款</button>
+                        <div id="processing" style="display: none">執行中...<i class="fa-li fa fa-spinner fa-spin"></i>
+                        </div>
                     </div>
                 </form>
+
             </div>
 
             <div id=noDataSection class="sectionBox" style="display: none">
@@ -859,16 +913,11 @@
             let email = document.getElementById("contactEmail").value
             let phone = document.getElementById("contactNo").value
 
-            console.log("click")
 
             if (name === "" || email === "" || phone === "") {
                 document.getElementById("notComplete").innerHTML = "請輸入聯絡資訊"
-                console.log("contact")
                 return
-
             }
-            // document.getElementById("notComplete").innerHTML = "DEMO"
-            console.log("card")
 
             // Get prime
             TPDirect.card.getPrime((result) => {
@@ -910,6 +959,7 @@
                         })
                         .then(res => {
                             console.log(res)
+                            document.getElementById("processing").style.display = "block"
                             transactionId = res.data.number
                             url_thankyou = "/thankyou?number=" + transactionId
                             window.location = url_thankyou
