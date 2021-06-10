@@ -1,134 +1,73 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %} {% block css %}
+<link rel="stylesheet" href="{{url_for('static',filename='css/attraction.css')}}">
 
-<head>
-    <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <title>台北一日遊 - 景點介紹</title>
-
-    <link rel="stylesheet" type="text/css" href="/attraction.css" />
-    
-</head>
-
-<body>
-    <nav>
-        <div class="first">
-            <div class="header"><a href="/">台北一日遊</a></div>
-            <div class="menuSection">
-                <div class="menu"><a id="tourBtn" href="javascript:void(0)" style="display:none">預定行程</a></div>
-                <div class="menu"><a id="adminBtn" href="javascript:void(0)" style="display:none">登入/註冊</a></div>            
-                <div class="menu"><a id="logoutBtn" href="javascript:void(0)" style="display:none">登出</a></div>
-            </div>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+{% endblock %} {% block title %}台北一日遊 - 景點介紹{% endblock %} {% block wrap %}
+<div id="wrapSection">
+    <div id="bookingSection">
+        <div id="album_box" class="album_box">
+            <a href="javascript:;" id="prev" class="arrow" style="background-image:url('/img/btn_leftArrow.png')"></a>
+            <a href="javascript:;" id="next" class="arrow" style="background-image:url('/img/btn_rightArrow.png')"></a>
+            <div id="album" class="album"></div>
         </div>
-    </nav>
 
-    <!-- 遮蓋層 -->
-    <label><a id="bgBtn" href="javascript:void(0)"><div id="bg" class="bg">sada</div></a></label>
-
-    <div id=memberBox_login class=memberBoxSection>
-        <div class="closeBtn"><a id="closeBtn1" href="javascript:void(0)"></a></div>
-        <div id=memberBox_bar></div>
-        <div class="memberBox">
-            <form action="/api/user" id=loginBox style="display: none" method="GET">
-                <p class="memberTitle">登入會員帳號</p>
-                <input type="text" id="logEmail" class="inputBox" name="logEmail" placeholder="輸入電子信箱"><br>
-                <input type="password" id="logPassword" class="inputBox" name="logPassword" placeholder="輸入密碼"><br>
-                <button class="memBtn" onclick= "loginProcess(event)">登入帳戶</button><br>
-                <p class="popupWord"><span id="failLogin"></span></p>
-                <p class="memberLink"><a id="logBtn" href="javascript:void(0)">還沒有帳戶？點此註冊</a></p>
-            </form>
-        </div>
-    </div>
-
-    <div id=memberBox_register class=memberBoxSection>
-        <div class="closeBtn"><a id="closeBtn2" href="javascript:void(0)"></a></div>
-        <div id=memberBox_bar></div>
-        <div class="memberBox">
-            <form action="/api/user" id=registerBox style="display: none" method="POST">
-                <p class="memberTitle">註冊會員帳號</p>
-                <input type="text" id="regName" class="inputBox" name="regName" placeholder="輸入姓名"><br>
-                <input type="text" id="regEmail" class="inputBox" name="regEmail" placeholder="輸入電子郵件" required><br>
-                <input type="password" id="regPassword" class="inputBox" name="regPassword" placeholder="輸入密碼"><br>
-                <button class="memBtn" onclick= "registerProcess()">註冊新帳戶</button><br>
-                <p class="popupWord"><span id="fail"></span></p>
-                <p class="memberLink"><a id="regBtn" href="javascript:void(0)">已經有帳戶了？點此登入</a></p>
-            </form>
-        </div>
-    </div>
-
-
-    <div id="wrap">
-        <div id="wrapSection">
-            <div id="bookingSection">
-                <div id="album_box" class="album_box">
-                    <a href="javascript:;" id="prev" class="arrow" style="background-image:url('/img/btn_leftArrow.png')"></a>
-                    <a href="javascript:;" id="next" class="arrow" style="background-image:url('/img/btn_rightArrow.png')"></a>
-                    <div id="album" class="album"></div>
-                </div>
-
-                    <div id="info" class="info">
-                        <div id="site" class="site">
-                            
-                        </div>
-                        <div class="schedule">
-                            <div class="schedule_title">訂購導覽行程</div>
-                            <div class="schedule_subtitle">以此景點為中心的一日行程，帶您探索城市角落故事</div>
-                            <div class="date">
-                                <div class="schedule_date">選擇日期：</div>
-                                <input type="date" id="calendar" name="calendar">
-                            </div>
-                            <div class="time">
-                                <div class="schedule_time">選擇時間：</div>
-                                <label class="container">
-                                    上半天<input type="radio" checked="checked" name="dayTime" value="早上 9 點到下午 4 點" onclick="handleClick(this.value);"><span class="checkmark"></span>
-                                </label>
-                                <label class="container">
-                                    下半天<input type="radio" name="dayTime" value="早上 4 點到下午 9 點" onclick="handleClick(this.value);"><span class="checkmark"></span>
-                                </label>
-                                
-                            </div>
-                            <div class="fee">
-                                <div class="total">導覽費用：</div>
-                                <div id="total_1" class="total_1">新台幣 2000 元</div>
-                                <div id="total_2" class="total_1">新台幣 2500 元</div>
-                            </div>
-                            <form action="/api/booking" id="bookingInfo" method="POST">
-                                <button id="bookBtn" onclick="bookProcedure()">開始預定行程</button>
-                            </form>
-                            <p class="popupWord"><span id="notice"></span></p>
-                        </div>
-                    </div>
-        
-
-                <hr class="hr2">
+        <div id="info" class="info">
+            <div id="site" class="site">
 
             </div>
-
-            <div id="attraction_content" class="attraction_content">
-                <div id="description_info"></div>
-
-                <div id="location_info">
-                    <div class="location">景點地址：</div>
+            <div class="schedule">
+                <div class="schedule_title">訂購導覽行程</div>
+                <div class="schedule_subtitle">以此景點為中心的一日行程，帶您探索城市角落故事</div>
+                <div class="date">
+                    <div class="schedule_date">選擇日期：</div>
+                    <input type="date" id="calendar" name="calendar">
                 </div>
+                <div class="time">
+                    <div class="schedule_time">選擇時間：</div>
+                    <label class="container">
+                        上半天<input type="radio" checked="checked" name="dayTime" value="morning"
+                            onclick="handleClick(this.value);"><span class="checkmark"></span>
+                    </label>
+                    <label class="container">
+                        下半天<input type="radio" name="dayTime" value="afternoon" onclick="handleClick(this.value);"><span
+                            class="checkmark"></span>
+                    </label>
 
-                <div id=traffic_info>
-                <div class="traffic">交通方式：</div>
                 </div>
+                <div class="fee">
+                    <div class="total">導覽費用：</div>
+                    <div id="total_1" class="total_1">新台幣 2000 元</div>
+                    <div id="total_2" class="total_1">新台幣 2500 元</div>
+                </div>
+                <form action="/api/booking" id="bookingInfo" method="POST">
+                    <button id="bookBtn" onclick="bookProcedure()">開始預定行程</button>
+                </form>
+                <p class="popupWord"><span id="notice"></span></p>
             </div>
         </div>
 
-        <div id="footer">
-            COPYRIGHT © 2021 台北一日遊
+
+        <hr class="hr2">
+
+    </div>
+
+    <div id="attraction_content" class="attraction_content">
+        <div id="description_info"></div>
+
+        <div id="location_info">
+            <div class="location">景點地址：</div>
+        </div>
+
+        <div id=traffic_info>
+            <div class="traffic">交通方式：</div>
         </div>
     </div>
-    
 
+    <div id="mapid"></div>
 
-    
-
-
-    <script src="/attraction.js"></script>
-
-    
-
-</body>
+</div>
+{% endblock %} {% block script %}
+<script src="{{url_for('static',filename='js/attraction.js')}}"></script>
+<script src="{{url_for('static',filename='js/map.js')}}"></script>
+{% endblock %}

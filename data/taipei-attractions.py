@@ -1,14 +1,20 @@
 import json, os, mysql.connector
+from dotenv import load_dotenv
+from mysql.connector import pooling, Error
+from dotenv import load_dotenv
 
-# os.chdir("/Users/fang-chi/Documents/Software Engineering Programme/Term_2/Week 1/Origin-Repository/data")
+load_dotenv()
 
-mydb = mysql.connector.connect(
-    host="127.0.0.1",
-    user="debian-sys-maint",
-    password="exgi5qGqkOVES8BL",
-    database="attractions"
+connection_pool = pooling.MySQLConnectionPool(
+    pool_name = attractionInfo,
+    pool_size = 5,
+    host=os.getenv("DBhost"),
+    user=os.getenv("DBuser"),
+    password=os.getenv("DBpw"),
+    database=os.getenv("DB")
 )
 
+mydb = connection_pool.get_connection()
 mycursor = mydb.cursor(buffered=True)
 
 filename = "taipei-attractions.json"
@@ -45,6 +51,8 @@ for x in landlist:
     getLatitude = x["latitude"]
     mycursor.execute("INSERT INTO information (name, category, description, address, transport, mrt, latitude, longitude, images) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",(getStitle, getCAT2, getXbody, getAddress, getInfo, getMRT, getLatitude, getLongitude, resFile))
     mydb.commit()
+
+    mydb.close()
 
 
 

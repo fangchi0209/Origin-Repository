@@ -1,0 +1,363 @@
+html,
+body {
+    overflow-x: hidden;
+}
+
+#bookingSection {
+    width: 1200px;
+    margin: 54px auto 20px auto;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.album_box {
+    display: flex;
+    position: relative;
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 0px 5px;
+}
+
+.album {
+    display: flex;
+    position: relative;
+    width: 540px;
+    height: 400px;
+}
+
+.img {
+    width: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    flex: none;
+}
+
+.arrow {
+    position: absolute;
+    top: 180px;
+    z-index: 2;
+    width: 40px;
+    height: 40px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+#prev {
+    left: 20px;
+}
+
+#next {
+    right: 20px;
+}
+
+.info {
+    width: 600px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+}
+
+.site {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 70px;
+    margin: 10px auto;
+}
+
+.attraction_name {
+    width: 100%;
+    height: 33px;
+    font-family: Noto Sans TC;
+    font-weight: bold;
+    font-size: 24px;
+    color: #666666;
+}
+
+.place {
+    width: 100%;
+    height: 22px;
+    margin: 10px 0px;
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    color: #666666;
+}
+
+.schedule {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 302px;
+    padding: 20px;
+    box-sizing: border-box;
+    background: #E8E8E8;
+    border-radius: 5px;
+    justify-content: space-around;
+}
+
+.schedule_title {
+    font-family: Noto Sans TC;
+    font-weight: bold;
+    font-size: 16px;
+    color: #666666;
+}
+
+.schedule_subtitle {
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    line-height: 23px;
+    color: #666666;
+}
+
+.date {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    width: 50px;
+    height: 22px;
+    align-items: center;
+}
+
+.schedule_date {
+    font-family: Noto Sans TC;
+    font-weight: bold;
+    font-size: 16px;
+    flex: none;
+    color: #666666;
+}
+
+#calendar {
+    width: 193px;
+    height: 22px;
+    padding: 5px;
+    flex: none;
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    color: #666666;
+    cursor: pointer;
+    outline: none;
+}
+
+.time {
+    display: flex;
+    flex-direction: row;
+    width: 50px;
+    height: 22px;
+}
+
+.schedule_time {
+    font-family: Noto Sans TC;
+    font-weight: bold;
+    font-size: 16px;
+    flex: none;
+    color: #666666;
+}
+
+.container {
+    position: relative;
+    flex: none;
+    width: 48px;
+    height: 22px;
+    margin: 0px 10px 0px 30px;
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    text-align: center;
+    color: #666666;
+    cursor: pointer;
+}
+
+
+/* Hide the browser's default radio button */
+
+.time input {
+    opacity: 0;
+}
+
+
+/* Create a custom radio button */
+
+.checkmark {
+    position: absolute;
+    height: 22px;
+    width: 22px;
+    margin-left: -60px;
+    margin-top: -22px;
+    background-color: white;
+    border-radius: 50%;
+}
+
+
+/* When the radio button is checked, add a white background */
+
+.time input:checked~.checkmark {
+    background-color: white;
+}
+
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+
+.checkmark:after {
+    content: "";
+    display: none;
+}
+
+
+/* Show the indicator (dot/circle) when checked */
+
+.time input:checked~.checkmark:after {
+    display: block;
+}
+
+
+/* Style the indicator (dot/circle) */
+
+.time .checkmark:after {
+    position: absolute;
+    margin: 2px 2px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #448899;
+}
+
+.fee {
+    display: flex;
+    color: #666666;
+}
+
+.total {
+    font-family: Noto Sans TC;
+    font-weight: bold;
+    font-size: 16px;
+    color: #666666;
+}
+
+.total_1 {
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    color: #666666;
+}
+
+#bookBtn {
+    width: 154px;
+    height: 36px;
+    font-family: Noto Sans TC;
+    font-size: 19px;
+    color: #FFFFFF;
+    background: #448899;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+}
+
+#bookBtn:hover {
+    transform: translate3d(0px, -1px, 0px);
+    box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08);
+}
+
+.hr2 {
+    width: 100%;
+    height: 0px;
+    margin: 20px auto;
+    border: 1px solid #E8E8E8;
+}
+
+.attraction_content {
+    display: flex;
+    flex-direction: column;
+    width: 1200px;
+    margin: auto;
+}
+
+#description_info {
+    margin: 0px 10px;
+}
+
+.description {
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    line-height: 27px;
+    color: #666666;
+}
+
+#location_info {
+    display: flex;
+    flex-direction: column;
+    margin: 20px 10px 10px 10px;
+}
+
+.location {
+    font-family: Noto Sans TC;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 27px;
+    color: #666666;
+}
+
+.content_location {
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    color: #666666;
+}
+
+#traffic_info {
+    display: flex;
+    flex-direction: column;
+    margin: 20px 10px 70px 10px;
+}
+
+.traffic {
+    font-family: Noto Sans TC;
+    font-weight: bold;
+    font-size: 16px;
+    color: #666666;
+}
+
+.content_traffic {
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    line-height: 27px;
+    color: #666666;
+}
+
+#mapid {
+    height: 600px;
+}
+
+@media (max-width:1199px) {
+    #bookingSection {
+        width: 90%;
+    }
+    .album_box {
+        width: 340px;
+    }
+    .img {
+        width: 340px;
+    }
+    .info {
+        width: 340px;
+    }
+    .attraction_content {
+        width: 90%;
+    }
+}
+
+@media (max-width:800px) {
+    #bookingSection {
+        width: 90%;
+    }
+    .album_box {
+        width: 340px;
+    }
+    .img {
+        width: 340px;
+    }
+    .info {
+        width: 340px;
+    }
+    .attraction_content {
+        width: 90%;
+    }
+}

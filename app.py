@@ -24,7 +24,7 @@ connection_pool = pooling.MySQLConnectionPool(
     database=os.getenv("DB")
 )
 
-app = Flask(__name__, static_folder="static_data", static_url_path="/")
+app = Flask(__name__, static_folder="static", static_url_path="/")
 app.config["JSON_AS_ASCII"] = False
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.secret_key = os.getenv("secretKey")
@@ -159,7 +159,7 @@ def findId(attractionId):
                 "transport": searchId[5],
                 "mrt": searchId[6],
                 "latitude": searchId[7],
-                "longitutde": searchId[8],
+                "longitude": searchId[8],
                 "images": searchId[9].split(",")
             }})
         else:
@@ -388,8 +388,9 @@ def orders():
     mycursor = mydb.cursor(buffered=True)
 
     data = request.get_json()
+    print(data)
     prime = data["prime"]
-    price = data["order"]["price"].split(" ")[1]
+    price = data["order"]["price"]
     urlId = data["order"]["trip"]["attraction"]["id"]
     date = data["order"]["trip"]["date"]
     time = data["order"]["trip"]["time"]
@@ -408,7 +409,7 @@ def orders():
             body = {
                 "prime": prime,
                 "partner_key": os.getenv("partnerKey"),
-                "merchant_id": "Fangchi_CTBC",
+                "merchant_id": os.getenv("merchantId"),
                 "details": json.dumps({
                     "id": urlId,
                     "date": date,
@@ -425,7 +426,7 @@ def orders():
             r = requests.post("https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime",
                               data=json.dumps(body), headers=header)
             result = json.loads(r.text)
-            # print(result)
+            print(result)
 
             session["transactionId"] = result["bank_transaction_id"]
 

@@ -1,0 +1,204 @@
+html,
+body {
+    overflow-x: hidden;
+}
+
+.hr2 {
+    width: 100%;
+    height: 0px;
+    margin: auto;
+    border: 1px solid #E8E8E8;
+}
+
+.sectionHead {
+    width: 900px;
+}
+
+.introduction {
+    font-family: Noto Sans TC;
+    font-size: 19px;
+    font-weight: bold;
+    line-height: 16px;
+    color: #666666;
+}
+
+.sectionBox {
+    width: 900px;
+    margin: 30px 0px;
+}
+
+.sectionBox_fee {
+    width: 900px;
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.tourSection {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.tourPic {
+    width: 260px;
+    height: 200px;
+    background-size: cover;
+}
+
+#deleteBtn {
+    height: 30px;
+    display: block;
+}
+
+.binIcon {
+    width: 30px;
+    height: 30px;
+    background-image: url("/img/icon_delete.png");
+    background-size: cover;
+    cursor: pointer;
+}
+
+.tourInfo {
+    display: flex;
+    flex-direction: column;
+    margin-left: 30px;
+    width: 200px;
+    flex: auto;
+}
+
+.tourInfoTitle1 {
+    display: flex;
+    font-family: Noto Sans TC;
+    font-weight: bold;
+    font-size: 16px;
+    color: #448899;
+    margin-bottom: 18px;
+}
+
+.tourInfoTitle {
+    display: flex;
+    flex-direction: row;
+    font-family: Noto Sans TC;
+    font-weight: bold;
+    font-size: 16px;
+    color: #666666;
+    margin-bottom: 12px;
+}
+
+.prevData {
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    font-weight: normal;
+    color: #666666;
+}
+
+.inputTitle {
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    color: #666666;
+    line-height: 40px;
+}
+
+.inputBox {
+    width: 200px;
+    height: 38px;
+    background: #FFFFFF;
+    border: 1px solid #E8E8E8;
+    box-sizing: border-box;
+    border-radius: 5px;
+}
+
+.sidebyside {
+    display: flex;
+}
+
+.ps {
+    font-family: Noto Sans TC;
+    font-weight: bold;
+    font-size: 16px;
+    color: #666666;
+}
+
+.confirmBtn {
+    width: 173px;
+    height: 36px;
+    background: #448899;
+    border-radius: 5px;
+    font-family: Noto Sans TC;
+    font-size: 19px;
+    color: #FFFFFF;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+}
+
+.confirmBtn:hover {
+    transform: translate3d(0px, -1px, 0px);
+    box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08);
+}
+
+#noData {
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    color: #666666;
+}
+
+#processing {
+    font-family: Noto Sans TC;
+    color: #666666;
+    font-size: 16px;
+    margin: 10px;
+}
+
+@media (max-width:1199px) {
+    #wrapSection {
+        width: 80%;
+    }
+    .sectionHead {
+        width: 100%;
+    }
+    #main {
+        width: 100%
+    }
+    .sectionBox {
+        width: 100%
+    }
+    .sectionBox_fee {
+        width: 100%
+    }
+}
+
+@media (max-width:720px) {
+    #wrapSection {
+        width: 90%;
+    }
+    .sectionHead {
+        width: 100%;
+    }
+    #main {
+        width: 100%
+    }
+    .sectionBox {
+        width: 100%
+    }
+    .tourPic {
+        width: 340px;
+        height: 256px;
+    }
+    .tourInfo {
+        width: 100%;
+        margin: 30px auto 0px auto;
+    }
+    .binIcon {
+        position: absolute;
+        top: 450px;
+        right: 10px;
+    }
+    .sectionBox_fee {
+        width: 100%;
+    }
+}
