@@ -485,7 +485,7 @@ def orderNumber(orderNumber):
     # print(res)
 
     transactionDic = res["trade_records"][0]
-    print(transactionDic)
+    # print(transactionDic)
 
     # theOne = next(
     #     item for item in transactionList if item["bank_transaction_id"] == orderNumber)

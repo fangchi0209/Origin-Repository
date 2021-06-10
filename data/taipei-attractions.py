@@ -1,7 +1,6 @@
 import json, os, mysql.connector
 from dotenv import load_dotenv
 from mysql.connector import pooling, Error
-from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -13,7 +12,6 @@ connection_pool = pooling.MySQLConnectionPool(
     password=os.getenv("DBpw"),
     database=os.getenv("DB")
 )
-
 mydb = connection_pool.get_connection()
 mycursor = mydb.cursor(buffered=True)
 
@@ -53,6 +51,5 @@ for x in landlist:
     mydb.commit()
 
     mydb.close()
-
 
 
