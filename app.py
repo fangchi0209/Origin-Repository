@@ -20,8 +20,6 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.secret_key = os.getenv("secretKey")
 
 # Pages
-
-
 @app.route("/")
 def index():
     return render_template("index.html")
