@@ -1,0 +1,114 @@
+nav {
+    border-bottom: 1px solid #E8E8E8;
+}
+
+#wrap {
+    margin: 50px auto 0px auto;
+}
+
+#tickIcon {
+    width: 200px;
+    min-height: 200px;
+    background-image: url("/img/icon_tick.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin: 10px auto;
+}
+
+.section {
+    display: flex;
+    margin: 20px auto;
+}
+
+.sectionBox {
+    width: 900px;
+    margin: 0px auto;
+}
+
+.introduction {
+    font-family: Noto Sans TC;
+    font-size: 19px;
+    font-weight: bold;
+    line-height: 16px;
+    color: #666666;
+}
+
+.sidebyside {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.tourInfoTitle2 {
+    font-family: Noto Sans TC;
+    font-weight: bold;
+    font-size: 30px;
+    color: #448899;
+    margin-bottom: 18px;
+}
+
+#copyAction {
+    font-size: 35px;
+    margin-left: 10px;
+    text-decoration: none;
+    color: #448899;
+}
+
+.sectionConfirm {
+    display: flex;
+    flex-wrap: wrap;
+    width: 700px;
+    margin: 50px auto;
+    justify-content: space-around;
+    border: 1px solid #E8E8E8;
+    background-color: white;
+}
+
+.confirmTrip {
+    width: 300px;
+    margin: 10px;
+}
+
+.tourInfoTitle {
+    display: flex;
+    flex-direction: row;
+    font-family: Noto Sans TC;
+    font-weight: bold;
+    font-size: 16px;
+    color: #666666;
+    margin-bottom: 12px;
+}
+
+.prevData {
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    font-weight: normal;
+    color: #666666;
+}
+
+#tourPic {
+    width: 340px;
+    height: 200px;
+    margin: 10px;
+    background-size: cover;
+}
+
+@media (max-width:1199px) {
+    .section {
+        width: 80%;
+    }
+    .sectionBox {
+        width: 100%
+    }
+}
+
+@media (max-width:720px) {
+    .section {
+        width: 90%;
+    }
+    .sectionBox {
+        width: 100%
+    }
+    .sectionConfirm {
+        width: 100%
+    }
+}
