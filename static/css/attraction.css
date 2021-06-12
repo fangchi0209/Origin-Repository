@@ -3,6 +3,10 @@ body {
     overflow-x: hidden;
 }
 
+nav {
+    border-bottom: 1px solid #E8E8E8;
+}
+
 #bookingSection {
     width: 1200px;
     margin: 54px auto 20px auto;

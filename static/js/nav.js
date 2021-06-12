@@ -113,7 +113,7 @@ async function loginProcess(e) {
                 document.getElementById("failLogin").style.display = "block";
                 document.getElementById("failLogin").innerHTML = data.message
             } else {
-                window.location = '/'
+                location.reload()
             }
         })
 
