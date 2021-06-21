@@ -45,7 +45,7 @@ def thankyou():
     else:
         return redirect("/")
 
-@app.route("/loaderio-5da265fc51638a363dd0b2da2b3fb294")
+@app.route("/loaderio-5da265fc51638a363dd0b2da2b3fb294/")
 def loader():
     return "loaderio-5da265fc51638a363dd0b2da2b3fb294"
 
