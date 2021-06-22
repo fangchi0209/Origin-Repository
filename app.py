@@ -11,7 +11,7 @@ from route.userApi import userApi
 from route.bookingApi import bookingApi
 from route.orderApi import ordersApi, orderApi
 
-load_dotenv(dotenv_path="/home/ubuntu/Origin_Respository/.env")
+load_dotenv()
 
 
 app = Flask(__name__, static_folder="static", static_url_path="/")
