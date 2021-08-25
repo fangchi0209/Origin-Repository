@@ -29,7 +29,7 @@ async function confirmationProcess(orderNumber) {
                 document.getElementById("place").innerHTML = res.data.trip.name
                 document.getElementById("address").innerHTML = res.data.trip.address
                 document.getElementById("fee").innerHTML = "新台幣" + "&nbsp" + res.data.price + "&nbsp" + "元"
-                document.getElementById("tourPic").style.backgroundImage = "url('" + res.data.trip.image + "')";
+                document.getElementById("tourPic").style.backgroundImage = "url('" + res.data.trip.image.replace('http', 'https') + "')";
             }
         })
 }
