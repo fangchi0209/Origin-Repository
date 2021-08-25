@@ -52,16 +52,13 @@ async function showOneData(attractionId) {
 
         for (let n = 0; n < r.images.length; n++) {
             let img_tag = document.createElement("img");
-            img_tag.src = r.images[n];
+            img_tag.src = r.images[n].replace("http", "https");
             img_tag.classList.add("img")
             img_group.push(img_tag)
         }
 
         for (let i = 0; i < img_group.length; i++) {
-            let imgLink = img_group[i]
-            console.log(imgLink)
-            himg = imgLink.replace("http", "https")
-            album.appendChild(himg)
+            album.appendChild(img_group[i])
             // console.log(album)
         }
 
