@@ -58,7 +58,7 @@ async function showOneData(attractionId) {
         }
 
         for (let i = 0; i < img_group.length; i++) {
-            himg = "https" + img_group[i]
+            himg = img_group[i].replace("http", "https")
             album.appendChild(himg)
             // console.log(album)
         }

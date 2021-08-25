@@ -101,7 +101,6 @@ def findId(attractionId):
         # print(type(searchId))
         if searchId != None:
             mydb.close()
-            print(searchId[9].split(",http"))
             return json.dumps({"data": {
                 "id": searchId[0],
                 "name": searchId[1],
@@ -112,7 +111,7 @@ def findId(attractionId):
                 "mrt": searchId[6],
                 "latitude": searchId[7],
                 "longitude": searchId[8],
-                "images": searchId[9].split(",http")
+                "images": searchId[9].split(",")
             }})
         else:
             mydb.close()
