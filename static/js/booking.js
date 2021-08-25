@@ -30,7 +30,7 @@ async function bookingInfo() {
                 document.getElementById("date").innerHTML = res.data.date
                 document.getElementById("fee").innerHTML = "新台幣" + "&nbsp" + res.data.price + "&nbsp" + "元"
                 document.getElementById("place").innerHTML = res.data.attraction.address
-                document.getElementById("tourPic").style.backgroundImage = "url('" + res.data.attraction.image + "')"
+                document.getElementById("tourPic").style.backgroundImage = "url('" + res.data.attraction.image.replace('http', 'https') + "')"
                 document.getElementById("ps").innerHTML = "新台幣" + "&nbsp" + res.data.price + "&nbsp" + "元"
                 url_id = res.data.attraction.id
                 if (res.data.time == "morning") {
