@@ -50,7 +50,7 @@ async function search_page(item) {
             let box_tag = document.createElement("div");
             let url_tag = document.createElement("a");
 
-            img_tag.style.backgroundImage = "url('" + data_source[n].images[0].replace("http", "https") + "')";
+            img_tag.style.backgroundImage = "url('" + data_source[n].images[0].replace('http', 'https') + "')";
 
             info_tag.classList.add("attractions_text");
             img_tag.classList.add("attractions_img");
